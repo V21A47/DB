@@ -1,0 +1,159 @@
+CREATE OR REPLACE FUNCTION mytable()
+RETURNS SETOF record AS
+$$
+SELECT id_пеюйжхх, мюгбюмхе
+  FROM  пеюйжхх    
+$$ LANGUAGE sql;
+
+/*
+studs=> SELECT * FROM mytable() as(ascas int);
+ ascas
+-------
+     1
+     2
+     3
+     4
+(4 rows)
+
+*/
+CREATE  OR REPLACE  FUNCTION ext()  -- МЮБЕПМНЕ МЮДН ЧГЮРЭ ЩРН
+RETURNS TABLE(id_пеюйжхх int, мюгбюмхе text) AS $$
+BEGIN
+ RETURN QUERY SELECT пеюйжхх.id_пеюйжхх, пеюйжхх.мюгбюмхе
+  FROM  пеюйжхх;
+END;
+$$ LANGUAGE plpgsql;
+/* USAGE
+studs=> select * from ext();
+ id_пеюйжхх |  мюгбюмхе
+------------+-------------
+          1 | яРПЮУ
+          2 | аЕГПЮГКХВХЕ
+          3 | пЮДНЯРЭ
+          4 | яРПЮУ
+(4 rows)
+*/
+---------------------------------------------
+ 
+ -- ТСМЙЖХЪ ДКЪ ОПНБЕПЙХ ХДЕИ 
+CREATE OR REPLACE FUNCTION ff() RETURNS void
+AS $$
+DECLARE
+r record;
+i integer;
+BEGIN  
+i = 56;
+FOR r IN  SELECT  id_ъбкемхъ, мюгбюмхе  FROM ъбкемхъ        
+LOOP
+INSERT INTO ъбкемхъ VALUES (i, r.мюгбюмхе); --БЮКХДМН
+i = i +1;
+END LOOP;
+return;
+END;
+$$ LANGUAGE plpgsql;
+--------------------------------------------
+
+CREATE OR REPLACE FUNCTION order_plan() RETURNS trigger
+AS $$
+DECLARE
+ id_ingr integer;
+ mass float;
+ id_akv integer;
+ finish boolean;
+ end_date date;
+ having_mass float;
+ end_persent float;
+  BEGIN
+IF (NEW.мнлеп_б_нвепедх <> 1) THEN RETURN NEW;
+END IF;
+FOR id_ingr, mass IN SELECT хд_хмцпедхемрю, люяяю FROM янярюб WHERE хд_кейюпярбю = NEW.хд_кейюпярбю
+LOOP
+SELECT хд_юйбюрнпхх  INTO id_akv  FROM хмцпедхемр WHERE хд_хмцпедхемрю = id_ingr;
+	FOR having_mass IN SELECT люяяю  FROM мюкхвхе_хмцпедхемрнб WHERE (хд_хмцпедхемрю = id_ingr) AND (цндем_дн > NOW())
+	LOOP
+	mass := mass - having_mass;
+	END LOOP; 
+	
+-- РСР МЮДН ОПХДСЛЮРЭ ВРН-РН ОНСЛМЕЕ
+ 
+IF (mass > 0) THEN
+	finish := FALSE;
+	end_date := NOW() + ROUND(mass/10);
+	ELSE finish := TRUE; end_date := NOW();
+END IF;	
+INSERT INTO окюм_люпьпср VALUES (NEW.хд_гюйюгю, id_ingr, id_akv, end_date, finish);
+END LOOP;
+ 
+	end_persent := (SELECT COUNT(хд_гюйюгю) FROM окюм_люпьпср WHERE (хд_гюйюгю = NEW.хд_гюйюгю) AND (янапюмн = TRUE)) / 
+	(SELECT COUNT(хд_гюйюгю) FROM окюм_люпьпср WHERE (хд_гюйюгю = NEW.хд_гюйюгю));
+	SELECT MAX(дюрю_гюбепьемхъ)  INTO end_date  FROM окюм_люпьпср WHERE хд_гюйюгю = NEW.хд_гюйюгю;
+
+	INSERT INTO "ярюрся_гюйюгю" VALUES (NEW.хд_гюйюгю, end_persent, end_date);
+
+    RETURN NEW;	
+  END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER planning
+AFTER  INSERT ON "гюйюг"
+FOR EACH ROW
+EXECUTE PROCEDURE order_plan();
+ 
+
+CREATE OR REPLACE FUNCTION update_plan() RETURNS trigger
+AS $$
+DECLARE
+id_ingr integer[];
+mass float[];
+id_order integer;
+end_persent float;
+end_date date;
+op varchar(3);
+BEGIN 
+IF (TG_OP = 'INSERT') THEN
+	 op = 'NEW';
+ELSIF (TG_OP = 'DELETE') THEN
+	 op = 'OLD';
+END IF;
+
+	EXECUTE 'UPDATE окюм_люпьпср SET дюрю_гюбепьемхъ  = дюрю_гюбепьемхъ - ROUND(' || op || ' .люяяю/10) WHERE хд_хмцпедхемрю == '|| op || '.хд_хмцпедхемрю';
+
+	FOR id_order IN EXECUTE 'SELECT хд_гюйюгю  FROM окюм_люпьпср WHERE хд_хмцпедхемрю == ' || op || '.хд_хмцпедхемрю' 
+	LOOP 
+	end_persent := (SELECT COUNT(хд_гюйюгю) FROM окюм_люпьпср WHERE (хд_гюйюгю = id_order) AND (янапюмн = TRUE)) / 
+	(SELECT COUNT(хд_гюйюгю) FROM окюм_люпьпср WHERE (хд_гюйюгю = id_order));
+	SELECT MAX(дюрю_гюбепьемхъ)  INTO end_date  FROM окюм_люпьпср WHERE хд_гюйюгю = id_order;
+
+	UPDATE ярюрся_гюйюгю SET бшонкмемхе = end_persent, дюрю_гюбепьемхъ = end_date WHERE хд_гюйюгю = id_order;
+	END LOOP;
+	EXECUTE 'RETURN ' || op;
+
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER planning
+AFTER  INSERT OR DELETE ON "мюкхвхе_хмцпедхемрнб"
+FOR EACH ROW
+EXECUTE PROCEDURE update_plan();
+
+CREATE OR REPLACE FUNCTION update_orders() RETURNS trigger
+AS $$
+DECLARE
+val integer;
+BEGIN
+SELECT MAX(мнлеп_б_нвепедх) INTO val FROM гюйюг;
+IF val IS NOT NULL  THEN 
+NEW.мнлеп_б_нвепедх = val + 1;
+ELSIF TRUE THEN NEW.мнлеп_б_нвепедх = 1; 
+END IF;
+RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER orders
+BEFORE INSERT ON "гюйюг"
+FOR EACH ROW
+EXECUTE PROCEDURE update_orders();

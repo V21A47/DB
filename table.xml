@@ -8,7 +8,7 @@
       <TblOpts/>
       <Pk ClNs="ИД_АКВАТОРИИ" nm="pk"/>
       <Cl au="0" df="" nm="ИД_АКВАТОРИИ" nu="0">
-        <DT arr="0" ds="Serial" en="" id="777" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="ТИП" nu="0">
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
@@ -32,7 +32,7 @@
       <TblOpts/>
       <Pk ClNs="ИД_БОЛЕЗНИ" nm="pk"/>
       <Cl au="0" df="" nm="ИД_БОЛЕЗНИ" nu="0">
-        <DT arr="0" ds="Serial" en="" id="777" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="НАЗВАНИЕ" nu="0">
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
@@ -94,7 +94,7 @@
       <TblOpts/>
       <Pk ClNs="ИД_ИНГРЕДИЕНТА" nm="pk"/>
       <Cl au="0" df="" nm="ИД_ИНГРЕДИЕНТА" nu="0">
-        <DT arr="0" ds="Serial" en="" id="777" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="НАЗВАНИЕ" nu="0">
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
@@ -121,6 +121,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="КОРАБЛЬ">
       <TblOpts/>
+      <Cl au="0" df="" nm="ИД_АКВАТОРИИ" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
       <Cl au="0" df="" nm="ДОЛГОТА" nu="0">
         <DT arr="0" ds="Double" en="" id="8" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
@@ -130,6 +133,11 @@
       <Cl au="0" df="" nm="СРЕДНЯЯ_СКОРОСТЬ" nu="0">
         <DT arr="0" ds="Float" en="" id="6" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
+      <Fk deAc="3" nm="fk_КОРАБЛЬ_АКВАТОРИЯ" prLkCl="ИД_АКВАТОРИИ" upAc="3">
+        <PrTb mn="0" nm="АКВАТОРИЯ" oe="1" sch="schemaA" zr="0"/>
+        <CdTb mn="1" nm="КОРАБЛЬ" oe="0" sch="schemaA" zr="1"/>
+        <ClPr cdCl="ИД_АКВАТОРИИ" prCl="ИД_АКВАТОРИИ"/>
+      </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
@@ -137,7 +145,7 @@
       <TblOpts/>
       <Pk ClNs="ИД_ЛЕКАРСТВА" nm="pkЛЕКАРСТВО"/>
       <Cl au="0" df="" nm="ИД_ЛЕКАРСТВА" nu="0">
-        <DT arr="0" ds="Serial" en="" id="777" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="НАЗВАНИЕ" nu="0">
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
@@ -156,9 +164,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="ЛОКАЦИЯ">
       <TblOpts/>
-      <Pk ClNs="ИД_ПОПУЛЯЦИИ" nm="pkЛОКАЦИЯ"/>
-      <Cl au="0" df="" nm="ИД_ПОПУЛЯЦИИ" nu="0">
-        <DT arr="0" ds="Serial" en="" id="777" ln="null" sc="null" sg="1" un="0"/>
+      <Pk ClNs="ИД_ЛОКАЦИИ" nm="pkЛОКАЦИЯ"/>
+      <Cl au="0" df="" nm="ИД_ЛОКАЦИИ" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="ИД_АКВАТОРИИ" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
@@ -230,7 +238,7 @@
       <Cl au="0" df="" nm="ИД_ИНГРЕДИЕНТА" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Cl au="0" df="" nm="ИД_АКВАТОРИИ" nu="0">
+      <Cl au="0" df="" nm="ИД_ЛОКАЦИИ" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="СОБРАНО" nu="0">
@@ -239,11 +247,6 @@
       <Cl au="0" df="" nm="ДАТА_ЗАВЕРШЕНИЯ" nu="0">
         <DT arr="0" ds="Date" en="" id="91" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Fk deAc="3" nm="fk_ПЛАН_МАРШРУТ_АКВАТОРИЯ" prLkCl="ИД_АКВАТОРИИ" upAc="3">
-        <PrTb mn="0" nm="АКВАТОРИЯ" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="ПЛАН_МАРШРУТ" oe="0" sch="schemaA" zr="1"/>
-        <ClPr cdCl="ИД_АКВАТОРИИ" prCl="ИД_АКВАТОРИИ"/>
-      </Fk>
       <Fk deAc="3" nm="fk_ПЛАН_МАРШРУТ_ЗАКАЗ" prLkCl="ИД_ЗАКАЗА" upAc="3">
         <PrTb mn="0" nm="ЗАКАЗ" oe="1" sch="schemaA" zr="0"/>
         <CdTb mn="1" nm="ПЛАН_МАРШРУТ" oe="1" sch="schemaA" zr="0"/>
@@ -253,6 +256,11 @@
         <PrTb mn="0" nm="ИНГРЕДИЕНТ" oe="1" sch="schemaA" zr="0"/>
         <CdTb mn="1" nm="ПЛАН_МАРШРУТ" oe="1" sch="schemaA" zr="0"/>
         <ClPr cdCl="ИД_ИНГРЕДИЕНТА" prCl="ИД_ИНГРЕДИЕНТА"/>
+      </Fk>
+      <Fk deAc="3" nm="fk_ПЛАН_МАРШРУТ_ЛОКАЦИЯ" prLkCl="ИД_ЛОКАЦИИ" upAc="3">
+        <PrTb mn="0" nm="ЛОКАЦИЯ" oe="1" sch="schemaA" zr="0"/>
+        <CdTb mn="1" nm="ПЛАН_МАРШРУТ" oe="0" sch="schemaA" zr="1"/>
+        <ClPr cdCl="ИД_ЛОКАЦИИ" prCl="ИД_ЛОКАЦИИ"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -285,7 +293,7 @@
       <TblOpts/>
       <Pk ClNs="ИД_СУЩЕСТВА" nm="pkСПРАВОЧНИК_СУЩЕСТВ"/>
       <Cl au="0" df="" nm="ИД_СУЩЕСТВА" nu="0">
-        <DT arr="0" ds="Serial" en="" id="777" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="false" nm="ЖИВОЕ" nu="0">
         <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
@@ -376,19 +384,22 @@
     <TbGl bkCl="ff6666ff" sch="schemaA" tbl="ИНГРЕДИЕНТ" x="272" y="258"/>
     <TbGl bkCl="ff6666ff" sch="schemaA" tbl="СОСТАВ" x="311" y="128"/>
     <TbGl bkCl="ff6666ff" sch="schemaA" tbl="МИНЕРАЛЬНОЕ_ВЕЩЕСТВО" x="90" y="619"/>
-    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="ЛОКАЦИЯ" x="504" y="397"/>
-    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="АКВАТОРИЯ" x="876" y="411"/>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="ЛОКАЦИЯ" x="493" y="386"/>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="АКВАТОРИЯ" x="792" y="450"/>
     <TbGl bkCl="ff6666ff" sch="schemaA" tbl="СПРАВОЧНИК_СУЩЕСТВ" x="86" y="400"/>
     <TbGl bkCl="ff6666ff" sch="schemaA" tbl="ЗАКАЗ" x="881" y="93"/>
     <TbGl bkCl="ff6666ff" sch="schemaA" tbl="НАЛИЧИЕ_ИНГРЕДИЕНТОВ" x="594" y="251"/>
-    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="ПЛАН_МАРШРУТ" x="875" y="280"/>
-    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="СТАТУС_ЗАКАЗА" x="1132" y="283"/>
-    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="КОРАБЛЬ" x="1117" y="433"/>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="ПЛАН_МАРШРУТ" x="845" y="288"/>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="СТАТУС_ЗАКАЗА" x="1093" y="206"/>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="КОРАБЛЬ" x="1129" y="456"/>
     <TbGl bkCl="ff6666ff" sch="schemaA" tbl="ЖИВОЕ_СУЩЕСТВО" x="268" y="497"/>
     <FkGl bkCl="ff000000" childEdge="" nm="schemaA.ЗАКАЗ.fk_ЗАКАЗ_ЛЕКАРСТВО" parentEdge="" positioner="">
       <positionableLines/>
     </FkGl>
     <FkGl bkCl="ff000000" childEdge="" nm="schemaA.ИНГРЕДИЕНТ.fk_ИНГРЕДИЕНТ_СПРАВОЧНИК_СУЩЕСТВ" parentEdge="" positioner="">
+      <positionableLines/>
+    </FkGl>
+    <FkGl bkCl="ff000000" childEdge="" nm="schemaA.КОРАБЛЬ.fk_КОРАБЛЬ_АКВАТОРИЯ" parentEdge="" positioner="">
       <positionableLines/>
     </FkGl>
     <FkGl bkCl="ff000000" childEdge="" nm="schemaA.ЛОКАЦИЯ.fk_ЛОКАЦИЯ_СПРАВОЧНИК_СУЩЕСТВ" parentEdge="" positioner="">
@@ -400,13 +411,13 @@
     <FkGl bkCl="ff000000" childEdge="" nm="schemaA.НАЛИЧИЕ_ИНГРЕДИЕНТОВ.fk_НАЛИЧИЕ_ИНГРЕДИЕНТОВ_ИНГРЕДИЕНТ" parentEdge="" positioner="">
       <positionableLines/>
     </FkGl>
-    <FkGl bkCl="ff000000" childEdge="" nm="schemaA.ПЛАН_МАРШРУТ.fk_ПЛАН_МАРШРУТ_АКВАТОРИЯ" parentEdge="" positioner="">
-      <positionableLines/>
-    </FkGl>
     <FkGl bkCl="ff000000" childEdge="" nm="schemaA.ПЛАН_МАРШРУТ.fk_ПЛАН_МАРШРУТ_ЗАКАЗ" parentEdge="" positioner="">
       <positionableLines/>
     </FkGl>
     <FkGl bkCl="ff000000" childEdge="" nm="schemaA.ПЛАН_МАРШРУТ.fk_ПЛАН_МАРШРУТ_ИНГРЕДИЕНТ" parentEdge="" positioner="">
+      <positionableLines/>
+    </FkGl>
+    <FkGl bkCl="ff000000" childEdge="" nm="schemaA.ПЛАН_МАРШРУТ.fk_ПЛАН_МАРШРУТ_ЛОКАЦИЯ" parentEdge="" positioner="">
       <positionableLines/>
     </FkGl>
     <FkGl bkCl="ff000000" childEdge="SOUTH" nm="schemaA.СОСТАВ.fk_СОСТАВ_ИНГРЕДИЕНТ" parentEdge="NORTH" positioner="OneLineUserLinkPositioner">
@@ -433,7 +444,7 @@
     <Notes/>
     <Zones/>
   </Dgm>
-  <RnmMgr NxRnmId="39">
+  <RnmMgr NxRnmId="41">
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="БОЛЕЗНЬ" SupCls="Schema" SupNme="schemaA">
       <Rnm id="1" nNm="ИД_БОЛЕЗНИ" oNm="Id"/>
     </RnmCh>
@@ -464,6 +475,7 @@
       <Rnm id="10" nNm="ИД_ВЕЩЕСТВА" oNm="Id"/>
     </RnmCh>
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="ЛОКАЦИЯ" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="39" nNm="ИД_ЛОКАЦИИ" oNm="ИД_ПОПУЛЯЦИИ"/>
       <Rnm id="11" nNm="ИД_ПОПУЛЯЦИИ" oNm="Id"/>
     </RnmCh>
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="ИСТОЧНИК_ИНГРЕДИЕНТА" SupCls="Schema" SupNme="schemaA">
@@ -537,6 +549,9 @@
     </RnmCh>
     <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
       <Rnm id="38" nNm="ЛОКАЦИЯ" oNm="ПОПУЛЯЦИЯ"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="ПЛАН_МАРШРУТ" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="40" nNm="ИД_ЛОКАЦИИ" oNm="ИД_АКВАТОРИИ"/>
     </RnmCh>
   </RnmMgr>
   <DbDocOptionMgr>

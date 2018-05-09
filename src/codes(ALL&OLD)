@@ -1,9 +1,9 @@
-CREATE OR REPLACE FUNCTION order_plan()
+CREATE OR REPLACE FUNCTION order_plan(id_task integer)
 -- функция добавляет строки в таблицу ПЛАН_МАРШРУТ
 AS $BODY$
 
     DECLARE
-        id_ingredient integer[];    -- ИД_ИГРЕДИЕНТА
+        id_ingredient integer;      -- ИД_ИГРЕДИЕНТА
         mass float;                 -- масса ингредиента
         id_akv integer;             --
         finish boolean;             --
@@ -17,12 +17,94 @@ AS $BODY$
         -- узнать, какие существа их содержат
         -- узнать, ближайшие популяции с ними
 
+        for id_ingredient in select
+        for id_ingredient, mass in select СОСТАВ join ЗАКАЗ using(ИД_ЛЕКАРСТВА) where (ИД_ЗАКАЗА = id_task)
 
 
     END;
 
 $BODY$ LANGUAGE plpgsql;
 
+
+with recursive r as (
+    select
+        1 as n,
+        1.0 as e
+    union
+    select
+        n+1 as n,
+        n / ( (n+1) + e ) as e
+
+    from r
+    where n < 20
+
+)
+select (2.0 + 1.0 / (1.0 + e)) as e from r;
+
+CREATE OR REPLACE FUNCTION getLocation(id_ingredient integer, amount integer)
+RETURNS integer
+AS $BODY$
+    DECLARE
+        value integer;
+        locationID integer;
+        ship_x float;
+        ship_y float;
+    BEGIN
+        select ШИРОТА into ship_x from КОРАБЛЬ;
+        select ДОЛГОТА into ship_y from КОРАБЛЬ;
+
+        select ИД_ЛОКАЦИИ into value from (
+            values  (1, 2, 25),
+                    (1, 3, 12),
+                    (2, 3, 56))
+            as t (ИД_АКВ_1, ИД_АКВ_2, ДИСТ) join where distance = 56;
+
+        return value;
+    END;
+
+$BODY$ LANGUAGE plpgsql;
+
+
+/* temp inserts
+        insert into ЛЕКАРСТВО
+        values  (1, 'medicine1', null, false, 100);
+
+        insert into СОСТАВ
+        values  (1, 1, 1.2),
+                (1, 2, 1.5);
+
+        insert into ЛОКАЦИЯ
+        values  (1, 1, 1, 100, 23.2, -1),
+                (2, 1, 1, 260, 30.2, -15),
+                (3, 2, 2, 1000, 102, 12);
+
+        insert into ИНГРЕДИЕНТ
+        values  (1, 'ЖАБА', 'ФУ', 1, 100500, null),
+                (2, 'БЕЕЕ что', 'ФУБЕ', 1, 100, 'УУУ'),
+                (3, 'ЖИВОТ', 'РАМА', 2, 200, 'хех');
+
+        insert into СПРАВОЧНИК_СУЩЕСТВ
+        values  (1, true),
+                (2, false);
+
+        insert into ЖИВОЕ_СУЩЕСТВО
+        values  (1, 'class1', 'sel1', 'vid1', null),
+                (2, 'class2', 'sem2', 'vid2', null),
+                (3, 'class3', 'sem3', 'vid3', null);
+
+        insert into МИНЕРАЛЬНОЕ_ВЕЩЕСТВО
+        values  (1, 'min4', 'type1'),
+                (2, 'min5', 'type5'),
+                (3, 'min6', 'type6');
+
+        insert into АКВАТОРИЯ
+        values  (1, 'залив', 'Аденский залив', 12.73, 47.59, 'является частью Аравийского моря Индийского океана'),
+                (2, 'залив', 'Бенгальский залив', 14.04, 87.53, 'морской залив, расположенный в северо-восточной части Индийского океана'),
+                (3, 'залив', 'Большой Австралийский залив', -36.73, 131.63, 'крупный открытый залив, относящийся к водам Индийского океана');
+
+*/
+
+        select ЛОКАЦИЯ.ИД_ЛОКАЦИИ, ЛОКАЦИЯ.ИД_СУЩЕСТВА, ЛОКАЦИЯ.КОЛИЧЕСТВО from ЛОКАЦИЯ join ИНГРЕДИЕНТ using(ИД_СУЩЕСТВА) join СОСТАВ using(ИД_ИНГРЕДИЕНТА) join ЛЕКАРСТВО using(ИД_ЛЕКАРСТВА);
 
         IF (NEW.НОМЕР_В_ОЧЕРЕДИ <> 1) THEN RETURN NEW;
         END IF;

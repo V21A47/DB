@@ -1,0 +1,299 @@
+/************ Update: Tables ***************/
+
+/******************** Add Table: "АКВАТОРИЯ" ************************/
+
+/* Build Table Structure */
+CREATE TABLE "АКВАТОРИЯ"
+(
+	"ИД_АКВАТОРИИ" Serial NOT NULL,
+	"ТИП" TEXT NOT NULL,
+	"НАЗВАНИЕ" TEXT NOT NULL,
+	"ШИРОТА" DOUBLE PRECISION NOT NULL,
+	"ДОЛГОТА" DOUBLE PRECISION NOT NULL,
+	"ОПИСАНИЕ" TEXT NULL
+);
+
+/* Add Primary Key */
+ALTER TABLE "АКВАТОРИЯ" ADD CONSTRAINT pk
+	PRIMARY KEY ("ИД_АКВАТОРИИ");
+
+
+/******************** Add Table: "БОЛЕЗНЬ" ************************/
+
+/* Build Table Structure */
+CREATE TABLE "БОЛЕЗНЬ"
+(
+	"ИД_БОЛЕЗНИ" Serial NOT NULL,
+	"НАЗВАНИЕ" TEXT NOT NULL,
+	"ТИП" TEXT NOT NULL,
+	"ОПИСАНИЕ" TEXT NULL
+);
+
+/* Add Primary Key */
+ALTER TABLE "БОЛЕЗНЬ" ADD CONSTRAINT pk
+	PRIMARY KEY ("ИД_БОЛЕЗНИ");
+
+
+/******************** Add Table: "ЖИВОЕ_СУЩЕСТВО" ************************/
+
+/* Build Table Structure */
+CREATE TABLE "ЖИВОЕ_СУЩЕСТВО"
+(
+	"ИД_СУЩЕСТВА" INTEGER NOT NULL,
+	"КЛАСС" TEXT NOT NULL,
+	"СЕМЕЙСТВО" TEXT NOT NULL,
+	"ВИД" TEXT NOT NULL,
+	"ОПИСАНИЕ" TEXT NULL
+);
+
+/* Add Primary Key */
+ALTER TABLE "ЖИВОЕ_СУЩЕСТВО" ADD CONSTRAINT "pkЖИВОЕ_СУЩЕСТВО"
+	PRIMARY KEY ("ИД_СУЩЕСТВА");
+
+
+/******************** Add Table: "ЗАКАЗ" ************************/
+
+/* Build Table Structure */
+CREATE TABLE "ЗАКАЗ"
+(
+	"ИД_ЗАКАЗА" Serial NOT NULL,
+	"ИД_ЛЕКАРСТВА" INTEGER NOT NULL,
+	"КОЛИЧЕСТВО" INTEGER NOT NULL,
+	"НАЗВАНИЕ_АПТЕЧНОЙ_СЕТИ" TEXT NOT NULL
+);
+
+/* Add Primary Key */
+ALTER TABLE "ЗАКАЗ" ADD CONSTRAINT "pkЗАКАЗ"
+	PRIMARY KEY ("ИД_ЗАКАЗА");
+
+
+/******************** Add Table: "ИНГРЕДИЕНТ" ************************/
+
+/* Build Table Structure */
+DROP TABLE "ИНГРЕДИЕНТ";
+CREATE OR REPLACE TABLE "ИНГРЕДИЕНТ"
+(
+	"ИД_ИНГРЕДИЕНТА" Serial NOT NULL,
+	"НАЗВАНИЕ" TEXT NOT NULL,
+	"ТИП" TEXT NOT NULL,
+	"ИД_СУЩЕСТВА" INTEGER NOT NULL,
+	"СТОИМОСТЬ" INTEGER NOT NULL,
+	"ОПИСАНИЕ" TEXT NULL
+);
+
+/* Add Primary Key */
+ALTER TABLE "ИНГРЕДИЕНТ" ADD CONSTRAINT pk
+	PRIMARY KEY ("ИД_ИНГРЕДИЕНТА");
+
+
+/******************** Add Table: "КОРАБЛЬ" ************************/
+
+/* Build Table Structure */
+CREATE TABLE "КОРАБЛЬ"
+(
+	"ДОЛГОТА" DOUBLE PRECISION NOT NULL,
+	"ШИРОТА" DOUBLE PRECISION NOT NULL,
+	"СРЕДНЯЯ_СКОРОСТЬ" FLOAT NOT NULL
+);
+
+
+/******************** Add Table: "ЛЕКАРСТВО" ************************/
+
+/* Build Table Structure */
+CREATE TABLE "ЛЕКАРСТВО"
+(
+	"ИД_ЛЕКАРСТВА" Serial NOT NULL,
+	"НАЗВАНИЕ" TEXT NOT NULL,
+	"ОПИСАНИЕ" TEXT NULL,
+	"ЭКСПЕРИМЕНТАЛЬНОЕ" BOOL NOT NULL,
+	"СТОИМОСТЬ" INTEGER NOT NULL
+);
+
+/* Add Primary Key */
+ALTER TABLE "ЛЕКАРСТВО" ADD CONSTRAINT "pkЛЕКАРСТВО"
+	PRIMARY KEY ("ИД_ЛЕКАРСТВА");
+
+
+/******************** Add Table: "ЛОКАЦИЯ" ************************/
+
+/* Build Table Structure */
+CREATE TABLE "ЛОКАЦИЯ"
+(
+	"ИД_ПОПУЛЯЦИИ" Serial NOT NULL,
+	"ИД_АКВАТОРИИ" INTEGER NOT NULL,
+	"ИД_СУЩЕСТВА" INTEGER NOT NULL,
+	"КОЛИЧЕСТВО" INTEGER NOT NULL,
+	"ШИРОТА" DOUBLE PRECISION NOT NULL,
+	"ДОЛГОТА" DOUBLE PRECISION NOT NULL
+);
+
+/* Add Primary Key */
+ALTER TABLE "ЛОКАЦИЯ" ADD CONSTRAINT "pkЛОКАЦИЯ"
+	PRIMARY KEY ("ИД_ПОПУЛЯЦИИ");
+
+
+/******************** Add Table: "МИНЕРАЛЬНОЕ_ВЕЩЕСТВО" ************************/
+
+/* Build Table Structure */
+CREATE TABLE "МИНЕРАЛЬНОЕ_ВЕЩЕСТВО"
+(
+	"ИД_СУЩЕСТВА" INTEGER NOT NULL,
+	"НАЗВАНИЕ " TEXT NOT NULL,
+	"ХИМИЧЕСКИЙ_ТИП" TEXT NOT NULL
+);
+
+/* Add Primary Key */
+ALTER TABLE "МИНЕРАЛЬНОЕ_ВЕЩЕСТВО" ADD CONSTRAINT "pkМИНЕРАЛЬНОЕ_ВЕЩЕСТВО"
+	PRIMARY KEY ("ИД_СУЩЕСТВА");
+
+
+/******************** Add Table: "НАЛИЧИЕ_ИНГРЕДИЕНТОВ" ************************/
+
+/* Build Table Structure */
+CREATE TABLE "НАЛИЧИЕ_ИНГРЕДИЕНТОВ"
+(
+	"ИД_ИНГРЕДИЕНТА" INTEGER NOT NULL,
+	"МАССА" DOUBLE PRECISION NOT NULL,
+	"ГОДЕН_ДО" DATE NOT NULL
+);
+
+
+/******************** Add Table: "ПЛАН_МАРШРУТ" ************************/
+
+/* Build Table Structure */
+CREATE TABLE "ПЛАН_МАРШРУТ"
+(
+	"ИД_ЗАКАЗА" INTEGER NOT NULL,
+	"ИД_ИНГРЕДИЕНТА" INTEGER NOT NULL,
+	"ИД_АКВАТОРИИ" INTEGER NOT NULL,
+	"СОБРАНО" BOOL NOT NULL,
+	"ДАТА_ЗАВЕРШЕНИЯ" DATE NOT NULL
+);
+
+
+/******************** Add Table: "СОСТАВ" ************************/
+
+/* Build Table Structure */
+CREATE TABLE "СОСТАВ"
+(
+	"ИД_ЛЕКАРСТВА" INTEGER NOT NULL,
+	"ИД_ИНГРЕДИЕНТА" INTEGER NOT NULL,
+	"МАССА" FLOAT NOT NULL
+);
+
+
+/******************** Add Table: "СПРАВОЧНИК_СУЩЕСТВ" ************************/
+
+/* Build Table Structure */
+CREATE TABLE "СПРАВОЧНИК_СУЩЕСТВ"
+(
+	"ИД_СУЩЕСТВА" Serial NOT NULL,
+	"ЖИВОЕ" BOOL DEFAULT false NOT NULL
+);
+
+/* Add Primary Key */
+ALTER TABLE "СПРАВОЧНИК_СУЩЕСТВ" ADD CONSTRAINT "pkСПРАВОЧНИК_СУЩЕСТВ"
+	PRIMARY KEY ("ИД_СУЩЕСТВА");
+
+
+/******************** Add Table: "СТАТУС_ЗАКАЗА" ************************/
+
+/* Build Table Structure */
+CREATE TABLE "СТАТУС_ЗАКАЗА"
+(
+	"ИД_ЗАКАЗА" INTEGER NOT NULL,
+	"ВЫПОЛНЕНИЕ" FLOAT NOT NULL,
+	"ДАТА_ЗАВЕРШЕНИЯ" DATE NOT NULL
+);
+
+
+/******************** Add Table: "ЭФФЕКТИВНОСТЬ_ЛЕКАРСТВА" ************************/
+
+/* Build Table Structure */
+CREATE TABLE "ЭФФЕКТИВНОСТЬ_ЛЕКАРСТВА"
+(
+	"ИД_ЛЕКАРСТВА" INTEGER NOT NULL,
+	"ИД_БОЛЕЗНИ" INTEGER NOT NULL,
+	"ЭФФЕКТИВНОСТЬ" FLOAT NOT NULL
+);
+
+
+
+
+
+/************ Add Foreign Keys ***************/
+
+/* Add Foreign Key: fk_ЗАКАЗ_ЛЕКАРСТВО */
+ALTER TABLE "ЗАКАЗ" ADD CONSTRAINT "fk_ЗАКАЗ_ЛЕКАРСТВО"
+	FOREIGN KEY ("ИД_ЛЕКАРСТВА") REFERENCES "ЛЕКАРСТВО" ("ИД_ЛЕКАРСТВА")
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_ИНГРЕДИЕНТ_СПРАВОЧНИК_СУЩЕСТВ */
+ALTER TABLE "ИНГРЕДИЕНТ" ADD CONSTRAINT "fk_ИНГРЕДИЕНТ_СПРАВОЧНИК_СУЩЕСТВ"
+	FOREIGN KEY ("ИД_СУЩЕСТВА") REFERENCES "СПРАВОЧНИК_СУЩЕСТВ" ("ИД_СУЩЕСТВА")
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_ЛОКАЦИЯ_СПРАВОЧНИК_СУЩЕСТВ */
+ALTER TABLE "ЛОКАЦИЯ" ADD CONSTRAINT "fk_ЛОКАЦИЯ_СПРАВОЧНИК_СУЩЕСТВ"
+	FOREIGN KEY ("ИД_СУЩЕСТВА") REFERENCES "СПРАВОЧНИК_СУЩЕСТВ" ("ИД_СУЩЕСТВА")
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_ПОПУЛЯЦИЯ_АКВАТОРИЯ */
+ALTER TABLE "ЛОКАЦИЯ" ADD CONSTRAINT "fk_ПОПУЛЯЦИЯ_АКВАТОРИЯ"
+	FOREIGN KEY ("ИД_АКВАТОРИИ") REFERENCES "АКВАТОРИЯ" ("ИД_АКВАТОРИИ")
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_НАЛИЧИЕ_ИНГРЕДИЕНТОВ_ИНГРЕДИЕНТ */
+ALTER TABLE "НАЛИЧИЕ_ИНГРЕДИЕНТОВ" ADD CONSTRAINT "fk_НАЛИЧИЕ_ИНГРЕДИЕНТОВ_ИНГРЕДИЕНТ"
+	FOREIGN KEY ("ИД_ИНГРЕДИЕНТА") REFERENCES "ИНГРЕДИЕНТ" ("ИД_ИНГРЕДИЕНТА")
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_ПЛАН_МАРШРУТ_АКВАТОРИЯ */
+ALTER TABLE "ПЛАН_МАРШРУТ" ADD CONSTRAINT "fk_ПЛАН_МАРШРУТ_АКВАТОРИЯ"
+	FOREIGN KEY ("ИД_АКВАТОРИИ") REFERENCES "АКВАТОРИЯ" ("ИД_АКВАТОРИИ")
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_ПЛАН_МАРШРУТ_ЗАКАЗ */
+ALTER TABLE "ПЛАН_МАРШРУТ" ADD CONSTRAINT "fk_ПЛАН_МАРШРУТ_ЗАКАЗ"
+	FOREIGN KEY ("ИД_ЗАКАЗА") REFERENCES "ЗАКАЗ" ("ИД_ЗАКАЗА")
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_ПЛАН_МАРШРУТ_ИНГРЕДИЕНТ */
+ALTER TABLE "ПЛАН_МАРШРУТ" ADD CONSTRAINT "fk_ПЛАН_МАРШРУТ_ИНГРЕДИЕНТ"
+	FOREIGN KEY ("ИД_ИНГРЕДИЕНТА") REFERENCES "ИНГРЕДИЕНТ" ("ИД_ИНГРЕДИЕНТА")
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_СОСТАВ_ИНГРЕДИЕНТ */
+ALTER TABLE "СОСТАВ" ADD CONSTRAINT "fk_СОСТАВ_ИНГРЕДИЕНТ"
+	FOREIGN KEY ("ИД_ИНГРЕДИЕНТА") REFERENCES "ИНГРЕДИЕНТ" ("ИД_ИНГРЕДИЕНТА")
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_СОСТАВ_ЛЕКАРСТВО */
+ALTER TABLE "СОСТАВ" ADD CONSTRAINT "fk_СОСТАВ_ЛЕКАРСТВО"
+	FOREIGN KEY ("ИД_ЛЕКАРСТВА") REFERENCES "ЛЕКАРСТВО" ("ИД_ЛЕКАРСТВА")
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_СПРАВОЧНИК_СУЩЕСТВ_ЖИВОЕ_СУЩЕСТВО */
+ALTER TABLE "СПРАВОЧНИК_СУЩЕСТВ" ADD CONSTRAINT "fk_СПРАВОЧНИК_СУЩЕСТВ_ЖИВОЕ_СУЩЕСТВО"
+	FOREIGN KEY ("ИД_СУЩЕСТВА") REFERENCES "ЖИВОЕ_СУЩЕСТВО" ("ИД_СУЩЕСТВА")
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_СПРАВОЧНИК_СУЩЕСТВ_МИНЕРАЛЬНОЕ_ВЕЩЕСТВО */
+ALTER TABLE "СПРАВОЧНИК_СУЩЕСТВ" ADD CONSTRAINT "fk_СПРАВОЧНИК_СУЩЕСТВ_МИНЕРАЛЬНОЕ_ВЕЩЕСТВО"
+	FOREIGN KEY ("ИД_СУЩЕСТВА") REFERENCES "МИНЕРАЛЬНОЕ_ВЕЩЕСТВО" ("ИД_СУЩЕСТВА")
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_СТАТУС_ЗАКАЗА_ЗАКАЗ */
+ALTER TABLE "СТАТУС_ЗАКАЗА" ADD CONSTRAINT "fk_СТАТУС_ЗАКАЗА_ЗАКАЗ"
+	FOREIGN KEY ("ИД_ЗАКАЗА") REFERENCES "ЗАКАЗ" ("ИД_ЗАКАЗА")
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_ЭФФЕКТИВНОСТЬ_ЛЕКАРСТВА_БОЛЕЗНЬ */
+ALTER TABLE "ЭФФЕКТИВНОСТЬ_ЛЕКАРСТВА" ADD CONSTRAINT "fk_ЭФФЕКТИВНОСТЬ_ЛЕКАРСТВА_БОЛЕЗНЬ"
+	FOREIGN KEY ("ИД_БОЛЕЗНИ") REFERENCES "БОЛЕЗНЬ" ("ИД_БОЛЕЗНИ")
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_ЭФФЕКТИВНОСТЬ_ЛЕКАРСТВА_ЛЕКАРСТВО */
+ALTER TABLE "ЭФФЕКТИВНОСТЬ_ЛЕКАРСТВА" ADD CONSTRAINT "fk_ЭФФЕКТИВНОСТЬ_ЛЕКАРСТВА_ЛЕКАРСТВО"
+	FOREIGN KEY ("ИД_ЛЕКАРСТВА") REFERENCES "ЛЕКАРСТВО" ("ИД_ЛЕКАРСТВА")
+	ON UPDATE NO ACTION ON DELETE NO ACTION;

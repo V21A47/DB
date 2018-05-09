@@ -1,105 +1,63 @@
-CREATE OR REPLACE FUNCTION mytable()
-RETURNS SETOF record AS
-$$
-SELECT id_РЕАКЦИИ, НАЗВАНИЕ
-  FROM  РЕАКЦИИ    
-$$ LANGUAGE sql;
+CREATE OR REPLACE FUNCTION order_plan()
+-- функция добавляет строки в таблицу ПЛАН_МАРШРУТ
+AS $BODY$
 
-/*
-studs=> SELECT * FROM mytable() as(ascas int);
- ascas
--------
-     1
-     2
-     3
-     4
-(4 rows)
+    DECLARE
+        id_ingredient integer[];    -- ИД_ИГРЕДИЕНТА
+        mass float;                 -- масса ингредиента
+        id_akv integer;             --
+        finish boolean;             --
+        end_date date;              -- дата завершения пути и сбора
+        having_mass float;          -- масса ингредиента, которая уже есть
+        end_persent float;          --
 
-*/
-CREATE  OR REPLACE  FUNCTION ext()  -- наверное надо юзать это
-RETURNS TABLE(id_РЕАКЦИИ int, НАЗВАНИЕ text) AS $$
-BEGIN
- RETURN QUERY SELECT РЕАКЦИИ.id_РЕАКЦИИ, РЕАКЦИИ.НАЗВАНИЕ
-  FROM  РЕАКЦИИ;
-END;
-$$ LANGUAGE plpgsql;
-/* USAGE
-studs=> select * from ext();
- id_РЕАКЦИИ |  НАЗВАНИЕ
-------------+-------------
-          1 | Страх
-          2 | Безразличие
-          3 | Радость
-          4 | Страх
-(4 rows)
-*/
----------------------------------------------
- 
- -- функция для проверки идей 
-CREATE OR REPLACE FUNCTION ff() RETURNS void
-AS $$
-DECLARE
-r record;
-i integer;
-BEGIN  
-i = 56;
-FOR r IN  SELECT  id_ЯВЛЕНИЯ, НАЗВАНИЕ  FROM ЯВЛЕНИЯ        
-LOOP
-INSERT INTO ЯВЛЕНИЯ VALUES (i, r.НАЗВАНИЕ); --валидно
-i = i +1;
-END LOOP;
-return;
-END;
-$$ LANGUAGE plpgsql;
---------------------------------------------
+    BEGIN
+        -- узнать, какие ингредиенты нужны
 
-CREATE OR REPLACE FUNCTION order_plan() RETURNS trigger
-AS $$
-DECLARE
- id_ingr integer;
- mass float;
- id_akv integer;
- finish boolean;
- end_date date;
- having_mass float;
- end_persent float;
-  BEGIN
-IF (NEW.НОМЕР_В_ОЧЕРЕДИ <> 1) THEN RETURN NEW;
-END IF;
-FOR id_ingr, mass IN SELECT ИД_ИНГРЕДИЕНТА, МАССА FROM СОСТАВ WHERE ИД_ЛЕКАРСТВА = NEW.ИД_ЛЕКАРСТВА
-LOOP
-SELECT ИД_АКВАТОРИИ  INTO id_akv  FROM ИНГРЕДИЕНТ WHERE ИД_ИНГРЕДИЕНТА = id_ingr;
-	FOR having_mass IN SELECT МАССА  FROM НАЛИЧИЕ_ИНГРЕДИЕНТОВ WHERE (ИД_ИНГРЕДИЕНТА = id_ingr) AND (ГОДЕН_ДО > NOW())
-	LOOP
-	mass := mass - having_mass;
-	END LOOP; 
-	
--- тут надо придумать что-то поумнее
- 
-IF (mass > 0) THEN
-	finish := FALSE;
-	end_date := NOW() + ROUND(mass/10);
-	ELSE finish := TRUE; end_date := NOW();
-END IF;	
-INSERT INTO ПЛАН_МАРШРУТ VALUES (NEW.ИД_ЗАКАЗА, id_ingr, id_akv, end_date, finish);
-END LOOP;
- 
-	end_persent := (SELECT COUNT(ИД_ЗАКАЗА) FROM ПЛАН_МАРШРУТ WHERE (ИД_ЗАКАЗА = NEW.ИД_ЗАКАЗА) AND (СОБРАНО = TRUE)) / 
-	(SELECT COUNT(ИД_ЗАКАЗА) FROM ПЛАН_МАРШРУТ WHERE (ИД_ЗАКАЗА = NEW.ИД_ЗАКАЗА));
-	SELECT MAX(ДАТА_ЗАВЕРШЕНИЯ)  INTO end_date  FROM ПЛАН_МАРШРУТ WHERE ИД_ЗАКАЗА = NEW.ИД_ЗАКАЗА;
+        -- узнать, какие существа их содержат
+        -- узнать, ближайшие популяции с ними
 
-	INSERT INTO "СТАТУС_ЗАКАЗА" VALUES (NEW.ИД_ЗАКАЗА, end_persent, end_date);
 
-    RETURN NEW;	
-  END;
-$$ LANGUAGE plpgsql;
+
+    END;
+
+$BODY$ LANGUAGE plpgsql;
+
+
+        IF (NEW.НОМЕР_В_ОЧЕРЕДИ <> 1) THEN RETURN NEW;
+        END IF;
+        FOR id_ingr, mass IN SELECT ИД_ИНГРЕДИЕНТА, МАССА FROM СОСТАВ WHERE ИД_ЛЕКАРСТВА = NEW.ИД_ЛЕКАРСТВА
+        LOOP
+        SELECT ИД_АКВАТОРИИ  INTO id_akv  FROM ИНГРЕДИЕНТ WHERE ИД_ИНГРЕДИЕНТА = id_ingr;
+            FOR having_mass IN SELECT МАССА  FROM НАЛИЧИЕ_ИНГРЕДИЕНТОВ WHERE (ИД_ИНГРЕДИЕНТА = id_ingr) AND (ГОДЕН_ДО > NOW())
+            LOOP
+            mass := mass - having_mass;
+            END LOOP;
+
+        -- тут надо придумать что-то поумнее
+
+        IF (mass > 0) THEN
+            finish := FALSE;
+            end_date := NOW() + ROUND(mass/10);
+            ELSE finish := TRUE; end_date := NOW();
+        END IF;
+        INSERT INTO ПЛАН_МАРШРУТ VALUES (NEW.ИД_ЗАКАЗА, id_ingr, id_akv, end_date, finish);
+        END LOOP;
+
+            end_persent := (SELECT COUNT(ИД_ЗАКАЗА) FROM ПЛАН_МАРШРУТ WHERE (ИД_ЗАКАЗА = NEW.ИД_ЗАКАЗА) AND (СОБРАНО = TRUE)) /
+            (SELECT COUNT(ИД_ЗАКАЗА) FROM ПЛАН_МАРШРУТ WHERE (ИД_ЗАКАЗА = NEW.ИД_ЗАКАЗА));
+            SELECT MAX(ДАТА_ЗАВЕРШЕНИЯ)  INTO end_date  FROM ПЛАН_МАРШРУТ WHERE ИД_ЗАКАЗА = NEW.ИД_ЗАКАЗА;
+
+            INSERT INTO "СТАТУС_ЗАКАЗА" VALUES (NEW.ИД_ЗАКАЗА, end_persent, end_date);
+
+            RETURN NEW;
 
 
 CREATE TRIGGER planning
 AFTER  INSERT ON "ЗАКАЗ"
 FOR EACH ROW
 EXECUTE PROCEDURE order_plan();
- 
+
 
 CREATE OR REPLACE FUNCTION update_plan() RETURNS trigger
 AS $$
@@ -110,7 +68,7 @@ id_order integer;
 end_persent float;
 end_date date;
 op varchar(3);
-BEGIN 
+BEGIN
 IF (TG_OP = 'INSERT') THEN
 	 op = 'NEW';
 ELSIF (TG_OP = 'DELETE') THEN
@@ -119,9 +77,9 @@ END IF;
 
 	EXECUTE 'UPDATE ПЛАН_МАРШРУТ SET ДАТА_ЗАВЕРШЕНИЯ  = ДАТА_ЗАВЕРШЕНИЯ - ROUND(' || op || ' .МАССА/10) WHERE ИД_ИНГРЕДИЕНТА == '|| op || '.ИД_ИНГРЕДИЕНТА';
 
-	FOR id_order IN EXECUTE 'SELECT ИД_ЗАКАЗА  FROM ПЛАН_МАРШРУТ WHERE ИД_ИНГРЕДИЕНТА == ' || op || '.ИД_ИНГРЕДИЕНТА' 
-	LOOP 
-	end_persent := (SELECT COUNT(ИД_ЗАКАЗА) FROM ПЛАН_МАРШРУТ WHERE (ИД_ЗАКАЗА = id_order) AND (СОБРАНО = TRUE)) / 
+	FOR id_order IN EXECUTE 'SELECT ИД_ЗАКАЗА  FROM ПЛАН_МАРШРУТ WHERE ИД_ИНГРЕДИЕНТА == ' || op || '.ИД_ИНГРЕДИЕНТА'
+	LOOP
+	end_persent := (SELECT COUNT(ИД_ЗАКАЗА) FROM ПЛАН_МАРШРУТ WHERE (ИД_ЗАКАЗА = id_order) AND (СОБРАНО = TRUE)) /
 	(SELECT COUNT(ИД_ЗАКАЗА) FROM ПЛАН_МАРШРУТ WHERE (ИД_ЗАКАЗА = id_order));
 	SELECT MAX(ДАТА_ЗАВЕРШЕНИЯ)  INTO end_date  FROM ПЛАН_МАРШРУТ WHERE ИД_ЗАКАЗА = id_order;
 
@@ -144,9 +102,9 @@ DECLARE
 val integer;
 BEGIN
 SELECT MAX(НОМЕР_В_ОЧЕРЕДИ) INTO val FROM ЗАКАЗ;
-IF val IS NOT NULL  THEN 
+IF val IS NOT NULL  THEN
 NEW.НОМЕР_В_ОЧЕРЕДИ = val + 1;
-ELSIF TRUE THEN NEW.НОМЕР_В_ОЧЕРЕДИ = 1; 
+ELSIF TRUE THEN NEW.НОМЕР_В_ОЧЕРЕДИ = 1;
 END IF;
 RETURN NEW;
 END;

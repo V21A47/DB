@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="UTF-8"?><Db flnm="table" nm="newDb" ver="1.3.4">
+  <VerLbl/>
+  <VerNotes/>
+  <DefTblOpts/>
+  <DocFolder>\</DocFolder>
+  <Sch Cm="" nm="schemaA">
+    <Tbl UsSo="1" nm="АКВАТОРИЯ">
+      <TblOpts/>
+      <Pk ClNs="ИД_АКВАТОРИИ" nm="pk"/>
+      <Cl au="0" df="" nm="ИД_АКВАТОРИИ" nu="0">
+        <DT arr="0" ds="Serial" en="" id="777" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="ТИП" nu="0">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="НАЗВАНИЕ" nu="0">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="ШИРОТА" nu="0">
+        <DT arr="0" ds="Double" en="" id="8" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="ДОЛГОТА" nu="0">
+        <DT arr="0" ds="Double" en="" id="8" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="ОПИСАНИЕ" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="БОЛЕЗНЬ">
+      <TblOpts/>
+      <Pk ClNs="ИД_БОЛЕЗНИ" nm="pk"/>
+      <Cl au="0" df="" nm="ИД_БОЛЕЗНИ" nu="0">
+        <DT arr="0" ds="Serial" en="" id="777" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="НАЗВАНИЕ" nu="0">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="ТИП" nu="0">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="ОПИСАНИЕ" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="ЖИВОЕ_СУЩЕСТВО">
+      <TblOpts/>
+      <Pk ClNs="ИД_СУЩЕСТВА" nm="pkЖИВОЕ_СУЩЕСТВО"/>
+      <Cl au="0" df="" nm="ИД_СУЩЕСТВА" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="КЛАСС" nu="0">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="СЕМЕЙСТВО" nu="0">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="ВИД" nu="0">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="ОПИСАНИЕ" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="ЗАКАЗ">
+      <TblOpts/>
+      <Pk ClNs="ИД_ЗАКАЗА" nm="pkЗАКАЗ"/>
+      <Cl au="0" df="" nm="ИД_ЗАКАЗА" nu="0">
+        <DT arr="0" ds="Serial" en="" id="777" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="ИД_ЛЕКАРСТВА" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="КОЛИЧЕСТВО" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="НАЗВАНИЕ_АПТЕЧНОЙ_СЕТИ" nu="0">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Fk deAc="3" nm="fk_ЗАКАЗ_ЛЕКАРСТВО" prLkCl="ИД_ЛЕКАРСТВА" upAc="3">
+        <PrTb mn="0" nm="ЛЕКАРСТВО" oe="1" sch="schemaA" zr="0"/>
+        <CdTb mn="1" nm="ЗАКАЗ" oe="0" sch="schemaA" zr="1"/>
+        <ClPr cdCl="ИД_ЛЕКАРСТВА" prCl="ИД_ЛЕКАРСТВА"/>
+      </Fk>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="ИНГРЕДИЕНТ">
+      <TblOpts/>
+      <Pk ClNs="ИД_ИНГРЕДИЕНТА" nm="pk"/>
+      <Cl au="0" df="" nm="ИД_ИНГРЕДИЕНТА" nu="0">
+        <DT arr="0" ds="Serial" en="" id="777" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="НАЗВАНИЕ" nu="0">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="ТИП" nu="0">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="ИД_СУЩЕСТВА" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="СТОИМОСТЬ" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="ОПИСАНИЕ" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Fk deAc="3" nm="fk_ИНГРЕДИЕНТ_СПРАВОЧНИК_СУЩЕСТВ" prLkCl="ИД_СУЩЕСТВА" upAc="3">
+        <PrTb mn="0" nm="СПРАВОЧНИК_СУЩЕСТВ" oe="1" sch="schemaA" zr="0"/>
+        <CdTb mn="0" nm="ИНГРЕДИЕНТ" oe="1" sch="schemaA" zr="0"/>
+        <ClPr cdCl="ИД_СУЩЕСТВА" prCl="ИД_СУЩЕСТВА"/>
+      </Fk>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="КОРАБЛЬ">
+      <TblOpts/>
+      <Cl au="0" df="" nm="ДОЛГОТА" nu="0">
+        <DT arr="0" ds="Double" en="" id="8" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="ШИРОТА" nu="0">
+        <DT arr="0" ds="Double" en="" id="8" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="СРЕДНЯЯ_СКОРОСТЬ" nu="0">
+        <DT arr="0" ds="Float" en="" id="6" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="ЛЕКАРСТВО">
+      <TblOpts/>
+      <Pk ClNs="ИД_ЛЕКАРСТВА" nm="pkЛЕКАРСТВО"/>
+      <Cl au="0" df="" nm="ИД_ЛЕКАРСТВА" nu="0">
+        <DT arr="0" ds="Serial" en="" id="777" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="НАЗВАНИЕ" nu="0">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="ОПИСАНИЕ" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="ЭКСПЕРИМЕНТАЛЬНОЕ" nu="0">
+        <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="СТОИМОСТЬ" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="ЛОКАЦИЯ">
+      <TblOpts/>
+      <Pk ClNs="ИД_ПОПУЛЯЦИИ" nm="pkЛОКАЦИЯ"/>
+      <Cl au="0" df="" nm="ИД_ПОПУЛЯЦИИ" nu="0">
+        <DT arr="0" ds="Serial" en="" id="777" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="ИД_АКВАТОРИИ" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="ИД_СУЩЕСТВА" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="КОЛИЧЕСТВО" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="ШИРОТА" nu="0">
+        <DT arr="0" ds="Double" en="" id="8" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="ДОЛГОТА" nu="0">
+        <DT arr="0" ds="Double" en="" id="8" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Fk deAc="3" nm="fk_ЛОКАЦИЯ_СПРАВОЧНИК_СУЩЕСТВ" prLkCl="ИД_СУЩЕСТВА" upAc="3">
+        <PrTb mn="0" nm="СПРАВОЧНИК_СУЩЕСТВ" oe="1" sch="schemaA" zr="0"/>
+        <CdTb mn="1" nm="ЛОКАЦИЯ" oe="0" sch="schemaA" zr="1"/>
+        <ClPr cdCl="ИД_СУЩЕСТВА" prCl="ИД_СУЩЕСТВА"/>
+      </Fk>
+      <Fk deAc="3" nm="fk_ПОПУЛЯЦИЯ_АКВАТОРИЯ" prLkCl="ИД_АКВАТОРИИ" upAc="3">
+        <PrTb mn="0" nm="АКВАТОРИЯ" oe="1" sch="schemaA" zr="0"/>
+        <CdTb mn="1" nm="ЛОКАЦИЯ" oe="1" sch="schemaA" zr="0"/>
+        <ClPr cdCl="ИД_АКВАТОРИИ" prCl="ИД_АКВАТОРИИ"/>
+      </Fk>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="МИНЕРАЛЬНОЕ_ВЕЩЕСТВО">
+      <TblOpts/>
+      <Pk ClNs="ИД_СУЩЕСТВА" nm="pkМИНЕРАЛЬНОЕ_ВЕЩЕСТВО"/>
+      <Cl au="0" df="" nm="ИД_СУЩЕСТВА" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="НАЗВАНИЕ " nu="0">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="ХИМИЧЕСКИЙ_ТИП" nu="0">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="НАЛИЧИЕ_ИНГРЕДИЕНТОВ">
+      <TblOpts/>
+      <Cl au="0" df="" nm="ИД_ИНГРЕДИЕНТА" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="МАССА" nu="0">
+        <DT arr="0" ds="Double" en="" id="8" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="ГОДЕН_ДО" nu="0">
+        <DT arr="0" ds="Date" en="" id="91" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Fk deAc="3" nm="fk_НАЛИЧИЕ_ИНГРЕДИЕНТОВ_ИНГРЕДИЕНТ" prLkCl="ИД_ИНГРЕДИЕНТА" upAc="3">
+        <PrTb mn="0" nm="ИНГРЕДИЕНТ" oe="1" sch="schemaA" zr="0"/>
+        <CdTb mn="1" nm="НАЛИЧИЕ_ИНГРЕДИЕНТОВ" oe="0" sch="schemaA" zr="1"/>
+        <ClPr cdCl="ИД_ИНГРЕДИЕНТА" prCl="ИД_ИНГРЕДИЕНТА"/>
+      </Fk>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="ПЛАН_МАРШРУТ">
+      <TblOpts/>
+      <Cl au="0" df="" nm="ИД_ЗАКАЗА" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="ИД_ИНГРЕДИЕНТА" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="ИД_АКВАТОРИИ" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="СОБРАНО" nu="0">
+        <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="ДАТА_ЗАВЕРШЕНИЯ" nu="0">
+        <DT arr="0" ds="Date" en="" id="91" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Fk deAc="3" nm="fk_ПЛАН_МАРШРУТ_АКВАТОРИЯ" prLkCl="ИД_АКВАТОРИИ" upAc="3">
+        <PrTb mn="0" nm="АКВАТОРИЯ" oe="1" sch="schemaA" zr="0"/>
+        <CdTb mn="1" nm="ПЛАН_МАРШРУТ" oe="0" sch="schemaA" zr="1"/>
+        <ClPr cdCl="ИД_АКВАТОРИИ" prCl="ИД_АКВАТОРИИ"/>
+      </Fk>
+      <Fk deAc="3" nm="fk_ПЛАН_МАРШРУТ_ЗАКАЗ" prLkCl="ИД_ЗАКАЗА" upAc="3">
+        <PrTb mn="0" nm="ЗАКАЗ" oe="1" sch="schemaA" zr="0"/>
+        <CdTb mn="1" nm="ПЛАН_МАРШРУТ" oe="1" sch="schemaA" zr="0"/>
+        <ClPr cdCl="ИД_ЗАКАЗА" prCl="ИД_ЗАКАЗА"/>
+      </Fk>
+      <Fk deAc="3" nm="fk_ПЛАН_МАРШРУТ_ИНГРЕДИЕНТ" prLkCl="ИД_ИНГРЕДИЕНТА" upAc="3">
+        <PrTb mn="0" nm="ИНГРЕДИЕНТ" oe="1" sch="schemaA" zr="0"/>
+        <CdTb mn="1" nm="ПЛАН_МАРШРУТ" oe="1" sch="schemaA" zr="0"/>
+        <ClPr cdCl="ИД_ИНГРЕДИЕНТА" prCl="ИД_ИНГРЕДИЕНТА"/>
+      </Fk>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="СОСТАВ">
+      <TblOpts/>
+      <Cl au="0" df="" nm="ИД_ЛЕКАРСТВА" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="ИД_ИНГРЕДИЕНТА" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="МАССА" nu="0">
+        <DT arr="0" ds="Float" en="" id="6" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Fk deAc="3" nm="fk_СОСТАВ_ИНГРЕДИЕНТ" prLkCl="ИД_ИНГРЕДИЕНТА" upAc="3">
+        <PrTb mn="0" nm="ИНГРЕДИЕНТ" oe="1" sch="schemaA" zr="0"/>
+        <CdTb mn="1" nm="СОСТАВ" oe="0" sch="schemaA" zr="1"/>
+        <ClPr cdCl="ИД_ИНГРЕДИЕНТА" prCl="ИД_ИНГРЕДИЕНТА"/>
+      </Fk>
+      <Fk deAc="3" nm="fk_СОСТАВ_ЛЕКАРСТВО" prLkCl="ИД_ЛЕКАРСТВА" upAc="3">
+        <PrTb mn="0" nm="ЛЕКАРСТВО" oe="1" sch="schemaA" zr="0"/>
+        <CdTb mn="1" nm="СОСТАВ" oe="1" sch="schemaA" zr="0"/>
+        <ClPr cdCl="ИД_ЛЕКАРСТВА" prCl="ИД_ЛЕКАРСТВА"/>
+      </Fk>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="СПРАВОЧНИК_СУЩЕСТВ">
+      <TblOpts/>
+      <Pk ClNs="ИД_СУЩЕСТВА" nm="pkСПРАВОЧНИК_СУЩЕСТВ"/>
+      <Cl au="0" df="" nm="ИД_СУЩЕСТВА" nu="0">
+        <DT arr="0" ds="Serial" en="" id="777" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="false" nm="ЖИВОЕ" nu="0">
+        <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Fk deAc="3" nm="fk_СПРАВОЧНИК_СУЩЕСТВ_ЖИВОЕ_СУЩЕСТВО" prLkCl="ИД_СУЩЕСТВА" upAc="3">
+        <PrTb mn="0" nm="ЖИВОЕ_СУЩЕСТВО" oe="1" sch="schemaA" zr="0"/>
+        <CdTb mn="0" nm="СПРАВОЧНИК_СУЩЕСТВ" oe="1" sch="schemaA" zr="1"/>
+        <ClPr cdCl="ИД_СУЩЕСТВА" prCl="ИД_СУЩЕСТВА"/>
+      </Fk>
+      <Fk deAc="3" nm="fk_СПРАВОЧНИК_СУЩЕСТВ_МИНЕРАЛЬНОЕ_ВЕЩЕСТВО" prLkCl="ИД_СУЩЕСТВА" upAc="3">
+        <PrTb mn="0" nm="МИНЕРАЛЬНОЕ_ВЕЩЕСТВО" oe="1" sch="schemaA" zr="0"/>
+        <CdTb mn="0" nm="СПРАВОЧНИК_СУЩЕСТВ" oe="1" sch="schemaA" zr="1"/>
+        <ClPr cdCl="ИД_СУЩЕСТВА" prCl="ИД_СУЩЕСТВА"/>
+      </Fk>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="СТАТУС_ЗАКАЗА">
+      <TblOpts/>
+      <Cl au="0" df="" nm="ИД_ЗАКАЗА" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="ВЫПОЛНЕНИЕ" nu="0">
+        <DT arr="0" ds="Float" en="" id="6" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="ДАТА_ЗАВЕРШЕНИЯ" nu="0">
+        <DT arr="0" ds="Date" en="" id="91" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Fk deAc="3" nm="fk_СТАТУС_ЗАКАЗА_ЗАКАЗ" prLkCl="ИД_ЗАКАЗА" upAc="3">
+        <PrTb mn="0" nm="ЗАКАЗ" oe="1" sch="schemaA" zr="0"/>
+        <CdTb mn="0" nm="СТАТУС_ЗАКАЗА" oe="1" sch="schemaA" zr="0"/>
+        <ClPr cdCl="ИД_ЗАКАЗА" prCl="ИД_ЗАКАЗА"/>
+      </Fk>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="ЭФФЕКТИВНОСТЬ_ЛЕКАРСТВА">
+      <TblOpts/>
+      <Cl au="0" df="" nm="ИД_ЛЕКАРСТВА" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="ИД_БОЛЕЗНИ" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="ЭФФЕКТИВНОСТЬ" nu="0">
+        <DT arr="0" ds="Float" en="" id="6" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Fk deAc="3" nm="fk_ЭФФЕКТИВНОСТЬ_ЛЕКАРСТВА_БОЛЕЗНЬ" prLkCl="ИД_БОЛЕЗНИ" upAc="3">
+        <PrTb mn="0" nm="БОЛЕЗНЬ" oe="1" sch="schemaA" zr="0"/>
+        <CdTb mn="1" nm="ЭФФЕКТИВНОСТЬ_ЛЕКАРСТВА" oe="0" sch="schemaA" zr="1"/>
+        <ClPr cdCl="ИД_БОЛЕЗНИ" prCl="ИД_БОЛЕЗНИ"/>
+      </Fk>
+      <Fk deAc="3" nm="fk_ЭФФЕКТИВНОСТЬ_ЛЕКАРСТВА_ЛЕКАРСТВО" prLkCl="ИД_ЛЕКАРСТВА" upAc="3">
+        <PrTb mn="0" nm="ЛЕКАРСТВО" oe="1" sch="schemaA" zr="0"/>
+        <CdTb mn="1" nm="ЭФФЕКТИВНОСТЬ_ЛЕКАРСТВА" oe="0" sch="schemaA" zr="1"/>
+        <ClPr cdCl="ИД_ЛЕКАРСТВА" prCl="ИД_ЛЕКАРСТВА"/>
+      </Fk>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <CustomTypes/>
+  </Sch>
+  <Dgm nm="diagramA">
+    <RnCf ClkAct="true" FtSz="11" lkStgy="OffsetDirect" zm="1.0">
+      <VbCfg>
+        <Fg ky="Auto Number" vl="0"/>
+        <Fg ky="Check" vl="0"/>
+        <Fg ky="Comment" vl="0"/>
+        <Fg ky="Data Type" vl="1"/>
+        <Fg ky="Default" vl="0"/>
+        <Fg ky="ENUM Values" vl="0"/>
+        <Fg ky="Length" vl="1"/>
+        <Fg ky="Name" vl="1"/>
+        <Fg ky="Nullable" vl="0"/>
+        <Fg ky="Schema Name" vl="0"/>
+        <Fg ky="Signed" vl="0"/>
+      </VbCfg>
+    </RnCf>
+    <DiaProps>
+      <Show AllCols="1" FkCols="1" FkNms="0" PkCols="1"/>
+      <ErNotation>DbwErNotation</ErNotation>
+      <DbTableRectangleFill>HeaderFooterFill</DbTableRectangleFill>
+      <svg path=""/>
+    </DiaProps>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="БОЛЕЗНЬ" x="42" y="167"/>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="ЛЕКАРСТВО" x="580" y="87"/>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="ЭФФЕКТИВНОСТЬ_ЛЕКАРСТВА" x="248" y="30"/>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="ИНГРЕДИЕНТ" x="272" y="258"/>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="СОСТАВ" x="311" y="128"/>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="МИНЕРАЛЬНОЕ_ВЕЩЕСТВО" x="90" y="619"/>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="ЛОКАЦИЯ" x="504" y="397"/>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="АКВАТОРИЯ" x="876" y="411"/>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="СПРАВОЧНИК_СУЩЕСТВ" x="86" y="400"/>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="ЗАКАЗ" x="881" y="93"/>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="НАЛИЧИЕ_ИНГРЕДИЕНТОВ" x="594" y="251"/>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="ПЛАН_МАРШРУТ" x="875" y="280"/>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="СТАТУС_ЗАКАЗА" x="1132" y="283"/>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="КОРАБЛЬ" x="1117" y="433"/>
+    <TbGl bkCl="ff6666ff" sch="schemaA" tbl="ЖИВОЕ_СУЩЕСТВО" x="268" y="497"/>
+    <FkGl bkCl="ff000000" childEdge="" nm="schemaA.ЗАКАЗ.fk_ЗАКАЗ_ЛЕКАРСТВО" parentEdge="" positioner="">
+      <positionableLines/>
+    </FkGl>
+    <FkGl bkCl="ff000000" childEdge="" nm="schemaA.ИНГРЕДИЕНТ.fk_ИНГРЕДИЕНТ_СПРАВОЧНИК_СУЩЕСТВ" parentEdge="" positioner="">
+      <positionableLines/>
+    </FkGl>
+    <FkGl bkCl="ff000000" childEdge="" nm="schemaA.ЛОКАЦИЯ.fk_ЛОКАЦИЯ_СПРАВОЧНИК_СУЩЕСТВ" parentEdge="" positioner="">
+      <positionableLines/>
+    </FkGl>
+    <FkGl bkCl="ff000000" childEdge="WEST" nm="schemaA.ЛОКАЦИЯ.fk_ПОПУЛЯЦИЯ_АКВАТОРИЯ" parentEdge="EAST" positioner="OneLineUserLinkPositioner">
+      <positionableLines/>
+    </FkGl>
+    <FkGl bkCl="ff000000" childEdge="" nm="schemaA.НАЛИЧИЕ_ИНГРЕДИЕНТОВ.fk_НАЛИЧИЕ_ИНГРЕДИЕНТОВ_ИНГРЕДИЕНТ" parentEdge="" positioner="">
+      <positionableLines/>
+    </FkGl>
+    <FkGl bkCl="ff000000" childEdge="" nm="schemaA.ПЛАН_МАРШРУТ.fk_ПЛАН_МАРШРУТ_АКВАТОРИЯ" parentEdge="" positioner="">
+      <positionableLines/>
+    </FkGl>
+    <FkGl bkCl="ff000000" childEdge="" nm="schemaA.ПЛАН_МАРШРУТ.fk_ПЛАН_МАРШРУТ_ЗАКАЗ" parentEdge="" positioner="">
+      <positionableLines/>
+    </FkGl>
+    <FkGl bkCl="ff000000" childEdge="" nm="schemaA.ПЛАН_МАРШРУТ.fk_ПЛАН_МАРШРУТ_ИНГРЕДИЕНТ" parentEdge="" positioner="">
+      <positionableLines/>
+    </FkGl>
+    <FkGl bkCl="ff000000" childEdge="SOUTH" nm="schemaA.СОСТАВ.fk_СОСТАВ_ИНГРЕДИЕНТ" parentEdge="NORTH" positioner="OneLineUserLinkPositioner">
+      <positionableLines/>
+    </FkGl>
+    <FkGl bkCl="ff000000" childEdge="EAST" nm="schemaA.СОСТАВ.fk_СОСТАВ_ЛЕКАРСТВО" parentEdge="SOUTH" positioner="TwoLineUserLinkPositioner">
+      <positionableLines/>
+    </FkGl>
+    <FkGl bkCl="ff000000" childEdge="" nm="schemaA.СПРАВОЧНИК_СУЩЕСТВ.fk_СПРАВОЧНИК_СУЩЕСТВ_ЖИВОЕ_СУЩЕСТВО" parentEdge="" positioner="">
+      <positionableLines/>
+    </FkGl>
+    <FkGl bkCl="ff000000" childEdge="" nm="schemaA.СПРАВОЧНИК_СУЩЕСТВ.fk_СПРАВОЧНИК_СУЩЕСТВ_МИНЕРАЛЬНОЕ_ВЕЩЕСТВО" parentEdge="" positioner="">
+      <positionableLines/>
+    </FkGl>
+    <FkGl bkCl="ff000000" childEdge="" nm="schemaA.СТАТУС_ЗАКАЗА.fk_СТАТУС_ЗАКАЗА_ЗАКАЗ" parentEdge="" positioner="">
+      <positionableLines/>
+    </FkGl>
+    <FkGl bkCl="ff000000" childEdge="WEST" nm="schemaA.ЭФФЕКТИВНОСТЬ_ЛЕКАРСТВА.fk_ЭФФЕКТИВНОСТЬ_ЛЕКАРСТВА_БОЛЕЗНЬ" parentEdge="EAST" positioner="OneLineUserLinkPositioner">
+      <positionableLines/>
+    </FkGl>
+    <FkGl bkCl="ff000000" childEdge="" nm="schemaA.ЭФФЕКТИВНОСТЬ_ЛЕКАРСТВА.fk_ЭФФЕКТИВНОСТЬ_ЛЕКАРСТВА_ЛЕКАРСТВО" parentEdge="" positioner="">
+      <positionableLines/>
+    </FkGl>
+    <Notes/>
+    <Zones/>
+  </Dgm>
+  <RnmMgr NxRnmId="39">
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="БОЛЕЗНЬ" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="1" nNm="ИД_БОЛЕЗНИ" oNm="Id"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="ЛЕКАРСТВО" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="2" nNm="ИД_ЛЕКАРСТВА" oNm="Id"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="ЭФФЕКТИВНОСТЬ_ЛЕКАРСТВА" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="3" nNm="ИД_ЛЕКАРСТВА" oNm="Id"/>
+    </RnmCh>
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+      <Rnm id="5" nNm="ЭФФЕКТИВНОСТЬ_ЛЕКАРСТВА" oNm="    ЭФФЕКТИВНОСТЬ_ЛЕКАРСТВА    "/>
+      <Rnm id="4" nNm="    ЭФФЕКТИВНОСТЬ_ЛЕКАРСТВА    " oNm="ЭФФЕКТИВНОСТЬ_ЛЕКАРСТВА"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="СЕТЬ_АПТЕК" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="6" nNm="ИД_СЕТИ" oNm="Id"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="ЛЕКАРСТВО" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="7" nNm="НАЗВАНИЕ_СЕТИ_АПТЕК" oNm="ИД_СЕТИ"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="ИНГРЕДИЕНТ" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="8" nNm="ИД_ИНГРЕДИЕНТА" oNm="Id"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="СОСТАВ" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="9" nNm="ИД_ЛЕКАРСТВА" oNm="Id"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="МИНЕРАЛЬНОЕ_ВЕЩЕСТВО" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="23" nNm="ИД_СУЩЕСТВА" oNm="ИД_ВЕЩЕСТВА"/>
+      <Rnm id="10" nNm="ИД_ВЕЩЕСТВА" oNm="Id"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="ЛОКАЦИЯ" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="11" nNm="ИД_ПОПУЛЯЦИИ" oNm="Id"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="ИСТОЧНИК_ИНГРЕДИЕНТА" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="12" nNm="ИД_ИНГРЕДИЕНТА" oNm="Id"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="СПИСОК_ИНГРЕДИЕНТОВ" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="14" nNm="НОМЕР_ПЛАНА" oNm="ИД_ПЛАНА"/>
+      <Rnm id="13" nNm="ИД_ПЛАНА" oNm="Id"/>
+    </RnmCh>
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+      <Rnm id="15" nNm="СПИСОК_ИНГРЕДИЕНТОВ" oNm="ПЛАН"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="СПИСОК_ИНГРЕДИЕНТОВ" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="16" nNm="ИД_ИНГРЕДИЕНТА" oNm="ИД_СПИСКА"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="МИНЕРАЛЬНОЕ_ВЕЩЕСТВО" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="17" nNm="ИД_АКВАТОРИИ" oNm="ИД_ТЕРРИТОРИИ"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="ЛОКАЦИЯ" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="18" nNm="ИД_АКВАТОРИИ" oNm="ИД_ТЕРРИТОРИИ"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="ИНГРЕДИЕНТ" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="19" nNm="ИД_АКВАТОРИИ" oNm="ИД_ТЕРРИТОРИИ"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="АКВАТОРИЯ" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="20" nNm="ИД_АКВАТОРИИ" oNm="Id"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="ЖИВОЕ_СУЩЕСТВО" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="21" nNm="ИД_СУЩЕСТВА" oNm="Id"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="ЖИВОЕ_СУЩЕСТВО" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="26" nNm="ТИП_СУЩЕСТВА" oNm="ЦАРСТВО"/>
+      <Rnm id="22" nNm="ЦАРСТВО" oNm="ТИП"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="СПРАВОЧНИК_СУЩЕСТВ" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="24" nNm="ИД" oNm="Id"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="МИНЕРАЛЬНОЕ_ВЕЩЕСТВО" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="25" nNm="ТИП_СУЩЕСТВА" oNm="НАЗВАНИЕ"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="ЗАКАЗ" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="27" nNm="ИД_ЗАКАЗА" oNm="Id"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="НАЛИЧИЕ_ИНГРЕДИЕНТОВ" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="28" nNm="ИД_ИНГРЕДИЕНТА" oNm="Id"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="ПЛАН_МАРШРУТ" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="29" nNm="ИД_ЗАКАЗА" oNm="Id"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="СТАТУС_ЗАКАЗА" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="30" nNm="ИД_ЗАКАЗА" oNm="Id"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="АКВАТОРИЯ" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="31" nNm="ДОЛГОТА" oNm="РАСПОЛОЖЕНИЕ"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="КОРАБЛЬ" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="33" nNm="ДОЛГОТА" oNm="ДОЛГО ТА"/>
+      <Rnm id="32" nNm="ДОЛГО ТА" oNm="Id"/>
+    </RnmCh>
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+      <Rnm id="34" nNm="КОРАБЛЬ" oNm="ПОЛОЖЕНИЕ_КОРАБЛЯ"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="НАЛИЧИЕ_ИНГРЕДИЕНТОВ" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="35" nNm="МАССА" oNm="КОЛИЧЕСТВО"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="ЖИВОЕ_СУЩЕСТВО" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="36" nNm="ИД_СУЩЕСТВА" oNm="Id"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="СПРАВОЧНИК_СУЩЕСТВ" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="37" nNm="ЖИВОЕ" oNm="ТИП_СУЩЕСТВА"/>
+    </RnmCh>
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+      <Rnm id="38" nNm="ЛОКАЦИЯ" oNm="ПОПУЛЯЦИЯ"/>
+    </RnmCh>
+  </RnmMgr>
+  <DbDocOptionMgr>
+    <BasicOptionMgr>
+      <Name>db.doc.option.mgr</Name>
+      <BoolOpt lbl="Diagrams" nm="doc.diagrams" on="1" spl="0"/>
+      <BoolOpt lbl="Foreign Keys" nm="doc.fks" on="1" spl="0"/>
+      <BoolOpt lbl="Indexes" nm="doc.indexes" on="1" spl="0"/>
+      <BoolOpt lbl="Overwrite CSS File" nm="doc.overwrite.css" on="1" spl="0"/>
+      <BoolOpt lbl="Procedures" nm="doc.procs" on="1" spl="0"/>
+      <BoolOpt lbl="Schemas" nm="doc.schemas" on="1" spl="0"/>
+      <BoolOpt lbl="Sequences" nm="doc.sequences" on="1" spl="0"/>
+      <BoolOpt lbl="Tables" nm="doc.tables" on="1" spl="0"/>
+      <BoolOpt lbl="Triggers" nm="doc.triggers" on="1" spl="0"/>
+      <BoolOpt lbl="Views" nm="doc.views" on="1" spl="0"/>
+    </BasicOptionMgr>
+  </DbDocOptionMgr>
+  <OpenEditors>
+    <OpenEditor ClsNm="Diagram" fqn="null.diagramA" selected="1"/>
+  </OpenEditors>
+  <TreePaths>
+    <TreePath/>
+    <TreePath>/Schemas (1)</TreePath>
+    <TreePath>/Schemas (1)/schemaA</TreePath>
+    <TreePath>/Schemas (1)/schemaA/Tables (15)</TreePath>
+    <TreePath>/Diagrams (1)</TreePath>
+  </TreePaths>
+  <SqlTexts/>
+</Db>

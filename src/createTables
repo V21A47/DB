@@ -336,7 +336,7 @@ CREATE TABLE АКВАТОРИЯ (
 
 DROP TABLE СПРАВОЧНИК_СУЩЕСТВ CASCADE;
 CREATE TABLE СПРАВОЧНИК_СУЩЕСТВ (
-	ИД_СУЩЕСТВА integer PRIMARY KEY,
+	ИД_СУЩЕСТВА serial PRIMARY KEY,
     ЖИВОЕ boolean NOT NULL
 );
 
@@ -384,7 +384,8 @@ CREATE TABLE ЖИВОЕ_СУЩЕСТВО (
 DROP TABLE МИНЕРАЛЬНОЕ_ВЕЩЕСТВО CASCADE;
 CREATE TABLE МИНЕРАЛЬНОЕ_ВЕЩЕСТВО (
     ИД_СУЩЕСТВА integer REFERENCES СПРАВОЧНИК_СУЩЕСТВ(ИД_СУЩЕСТВА),
-	ХИМИЧЕСКИЙ_ТИП text NOT NULL
+	ХИМИЧЕСКИЙ_ТИП text NOT NULL,
+	ОПИСАНИЕ text
 );
 
 
@@ -437,10 +438,10 @@ CREATE TABLE КОРАБЛЬ (
 \copy ЛЕКАРСТВО(НАЗВАНИЕ, ОПИСАНИЕ, ЭКСПЕРИМЕНТАЛЬНОЕ, СТОИМОСТЬ) FROM 'medicines';
 \copy ЭФФЕКТИВНОСТЬ_ЛЕКАРСТВА FROM 'lekar_des';
 \copy СПРАВОЧНИК_СУЩЕСТВ(ЖИВОЕ) FROM 'catalog';
-\copy ИНГРЕДИЕНТ(НАЗВАНИЕ, ИД_СУЩЕСТВА, СТОИМОСТЬ, ОПИСАНИЕ) FROM 'ingredients';
+\copy ИНГРЕДИЕНТ(НАЗВАНИЕ, ИД_СУЩЕСТВА, СТОИМОСТЬ) FROM 'ingredients';
 \copy СОСТАВ (ИД_ЛЕКАРСТВА, ИД_ИНГРЕДИЕНТА, МАССА) FROM 'sostav';
 \copy АКВАТОРИЯ(ТИП, НАЗВАНИЕ, ШИРОТА, ДОЛГОТА, ОПИСАНИЕ) FROM 'aquatories';
-\copy МИНЕРАЛЬНОЕ_ВЕЩЕСТВО(ХИМИЧЕСКИЙ_ТИП) FROM 'minerals';
+\copy МИНЕРАЛЬНОЕ_ВЕЩЕСТВО(ИД_СУЩЕСТВА, ХИМИЧЕСКИЙ_ТИП, ОПИСАНИЕ) FROM 'minerals';
 \copy ЛОКАЦИЯ(ИД_АКВАТОРИИ, ИД_СУЩЕСТВА, КОЛИЧЕСТВО, ШИРОТА, ДОЛГОТА) FROM 'locationFile';
 \copy ЖИВОЕ_СУЩЕСТВО(КЛАСС, СЕМЕЙСТВО, ВИД, ОПИСАНИЕ) FROM 'aliveCreatures';
 

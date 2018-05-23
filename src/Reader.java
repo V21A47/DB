@@ -28,8 +28,8 @@ class Reader{
         //int amount = fillObjectsListFile();
 
         //clearFile(objectsListFile+"_new");
-        changeCatalog();
-        //fillLocationsFile(11740);
+        //changeCatalog();
+        fillLocationsFile(11740);
 
 
     }

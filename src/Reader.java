@@ -27,14 +27,42 @@ class Reader{
         //clearFile(objectsListFile);
         //int amount = fillObjectsListFile();
 
-        clearFile(locationsFile);
-        fillLocationsFile(11740);
+        clearFile(objectsListFile+"_new");
+        changeCatalog();
+        //fillLocationsFile(11740);
 
-        //clearFile(ingredientsFile+"_new");
-        //chanceIngredients();
 
     }
 
+    public void changeCatalog(){
+        try{
+            LineNumberReader lineReader = new LineNumberReader(new FileReader(objectsListFile));
+            FileWriter writer = new FileWriter(objectsListFile + "_new", true);
+
+            String line = lineReader.readLine();
+
+            int a = 1;
+            int b = 1;
+
+            while(line != null){
+                if(line.equals("TRUE")){
+                    writer.write(a+ "\t" + "TRUE\n");
+                    a+=1;
+                } else {
+                    writer.write(b+ "\t" + "FALSE\n");
+                    b+=1;
+                }
+                line = lineReader.readLine();
+            }
+
+            lineReader.close();
+            writer.close();
+        } catch (IOException e){
+            System.err.println(e);
+        }
+    }
+
+    // vse
     public void chanceIngredients(){
         try{
             LineNumberReader lineReader = new LineNumberReader(new FileReader(ingredientsFile));

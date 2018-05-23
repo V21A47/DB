@@ -27,7 +27,7 @@ class Reader{
         //clearFile(objectsListFile);
         //int amount = fillObjectsListFile();
 
-        clearFile(objectsListFile+"_new");
+        //clearFile(objectsListFile+"_new");
         changeCatalog();
         //fillLocationsFile(11740);
 

@@ -333,11 +333,13 @@ CREATE TABLE АКВАТОРИЯ (
 	ОПИСАНИЕ text
 );
 
+
 DROP TABLE СПРАВОЧНИК_СУЩЕСТВ CASCADE;
 CREATE TABLE СПРАВОЧНИК_СУЩЕСТВ (
-	ИД_СУЩЕСТВА serial PRIMARY KEY,
+	ИД_СУЩЕСТВА integer PRIMARY KEY,
     ЖИВОЕ boolean NOT NULL
 );
+
 
 DROP TABLE ИНГРЕДИЕНТ CASCADE;
 CREATE TABLE ИНГРЕДИЕНТ (
@@ -348,12 +350,14 @@ CREATE TABLE ИНГРЕДИЕНТ (
     ОПИСАНИЕ  text
 );
 
+
 DROP TABLE СОСТАВ CASCADE;
 CREATE TABLE СОСТАВ (
 	ИД_ЛЕКАРСТВА  integer REFERENCES ЛЕКАРСТВО(ИД_ЛЕКАРСТВА),
 	ИД_ИНГРЕДИЕНТА integer REFERENCES ИНГРЕДИЕНТ(ИД_ИНГРЕДИЕНТА),
 	МАССА float   CHECK (МАССА > 0)
 );
+
 
 DROP TABLE ЛОКАЦИЯ CASCADE;
 CREATE TABLE ЛОКАЦИЯ (
@@ -365,20 +369,24 @@ CREATE TABLE ЛОКАЦИЯ (
     ДОЛГОТА real CHECK (ДОЛГОТА >= -180 AND ДОЛГОТА <= 180)
 );
 
+
 DROP TABLE ЖИВОЕ_СУЩЕСТВО CASCADE;
 CREATE TABLE ЖИВОЕ_СУЩЕСТВО (
     ИД_СУЩЕСТВА serial REFERENCES СПРАВОЧНИК_СУЩЕСТВ(ИД_СУЩЕСТВА),
+    ЖИВОЕ boolean,
 	КЛАСС text NOT NULL,
 	СЕМЕЙСТВО text NOT NULL,
 	ВИД text NOT NULL,
-ОПИСАНИЕ  text
+    ОПИСАНИЕ  text
 );
+
 
 DROP TABLE МИНЕРАЛЬНОЕ_ВЕЩЕСТВО CASCADE;
 CREATE TABLE МИНЕРАЛЬНОЕ_ВЕЩЕСТВО (
-    ИД_СУЩЕСТВА serial REFERENCES СПРАВОЧНИК_СУЩЕСТВ(ИД_СУЩЕСТВА),
+    ИД_СУЩЕСТВА integer REFERENCES СПРАВОЧНИК_СУЩЕСТВ(ИД_СУЩЕСТВА),
 	ХИМИЧЕСКИЙ_ТИП text NOT NULL
 );
+
 
 DROP TABLE ПЛАН_МАРШРУТ CASCADE;
 CREATE TABLE ПЛАН_МАРШРУТ (
@@ -389,12 +397,14 @@ CREATE TABLE ПЛАН_МАРШРУТ (
 	ДАТА_ЗАВЕРШЕНИЯ date NOT NULL
 );
 
+
 DROP TABLE НАЛИЧИЕ_ИНГРЕДИЕНТОВ CASCADE;
 CREATE TABLE НАЛИЧИЕ_ИНГРЕДИЕНТОВ (
 	ИД_ИНГРЕДИЕНТА integer REFERENCES ИНГРЕДИЕНТ(ИД_ИНГРЕДИЕНТА),
 	МАССА float   CHECK (МАССА > 0),
 	ГОДЕН_ДО date CHECK (ГОДЕН_ДО  > NOW())
 );
+
 
 DROP TABLE ЗАКАЗ CASCADE;
 CREATE TABLE ЗАКАЗ (
@@ -404,6 +414,7 @@ CREATE TABLE ЗАКАЗ (
 	НАЗВАНИЕ_АПТЕЧНОЙ_СЕТИ text NOT NULL
 );
 
+
 DROP TABLE СТАТУС_ЗАКАЗА CASCADE;
 CREATE TABLE СТАТУС_ЗАКАЗА (
 	ИД_ЗАКАЗА integer REFERENCES ЗАКАЗ(ИД_ЗАКАЗА),
@@ -411,6 +422,7 @@ CREATE TABLE СТАТУС_ЗАКАЗА (
 	ВЫПОЛНЕНИЕ float CHECK (ВЫПОЛНЕНИЕ >= 0 AND ВЫПОЛНЕНИЕ <= 1),
 	ДАТА_ЗАВЕРШЕНИЯ date
 );
+
 
 DROP TABLE КОРАБЛЬ CASCADE;
 CREATE TABLE КОРАБЛЬ (
@@ -424,13 +436,13 @@ CREATE TABLE КОРАБЛЬ (
 \copy БОЛЕЗНЬ(НАЗВАНИЕ, ТИП, ОПИСАНИЕ) FROM 'desease';
 \copy ЛЕКАРСТВО(НАЗВАНИЕ, ОПИСАНИЕ, ЭКСПЕРИМЕНТАЛЬНОЕ, СТОИМОСТЬ) FROM 'medicines';
 \copy ЭФФЕКТИВНОСТЬ_ЛЕКАРСТВА FROM 'lekar_des';
-\copy СПРАВОЧНИК_СУЩЕСТВ(ИД_СУЩЕСТВА, ЖИВОЕ) FROM 'catalog';
+\copy СПРАВОЧНИК_СУЩЕСТВ(ЖИВОЕ) FROM 'catalog';
 \copy ИНГРЕДИЕНТ(НАЗВАНИЕ, ИД_СУЩЕСТВА, СТОИМОСТЬ, ОПИСАНИЕ) FROM 'ingredients';
 \copy СОСТАВ (ИД_ЛЕКАРСТВА, ИД_ИНГРЕДИЕНТА, МАССА) FROM 'sostav';
 \copy АКВАТОРИЯ(ТИП, НАЗВАНИЕ, ШИРОТА, ДОЛГОТА, ОПИСАНИЕ) FROM 'aquatories';
 \copy МИНЕРАЛЬНОЕ_ВЕЩЕСТВО(ХИМИЧЕСКИЙ_ТИП) FROM 'minerals';
 \copy ЛОКАЦИЯ(ИД_АКВАТОРИИ, ИД_СУЩЕСТВА, КОЛИЧЕСТВО, ШИРОТА, ДОЛГОТА) FROM 'locationFile';
+\copy ЖИВОЕ_СУЩЕСТВО(КЛАСС, СЕМЕЙСТВО, ВИД, ОПИСАНИЕ) FROM 'aliveCreatures';
 
 
-
-select ЛОКАЦИЯ.ИД_АКВАТОРИИ, СПРАВОЧНИК_СУЩЕСТВ.ИД_СУЩЕСТВА, СПРАВОЧНИК_СУЩЕСТВ.ЖИВОЕ from ЛОКАЦИЯ join СПРАВОЧНИК_СУЩЕСТВ using(ИД_СУЩЕСТВА);
+select ЛОКАЦИЯ.ИД_АКВАТОРИИ, СПРАВОЧНИК_СУЩЕСТВ.ИД_СУЩЕСТВА, СПРАВОЧНИК_СУЩЕСТВ.ЖИВОЕ where СПРАВОЧНИК_СУЩЕСТВ.ИД_СУЩЕСТВА = from ЛОКАЦИЯ join СПРАВОЧНИК_СУЩЕСТВ using(ИД_СУЩЕСТВА);

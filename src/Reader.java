@@ -10,6 +10,7 @@ class Reader{
     private String mineralsFile;
     private String objectsListFile;
     private String locationsFile;
+    private String ingredientsFile;
 
     public Reader(){
 
@@ -18,6 +19,7 @@ class Reader{
         this.aliveCreaturesFile = "data/minerals";
         this.objectsListFile = "data/objectsList";
         this.locationsFile = "data/locationFile";
+        this.ingredientsFile = "data/ingredients";
 
     }
 
@@ -25,8 +27,33 @@ class Reader{
         //clearFile(objectsListFile);
         //int amount = fillObjectsListFile();
 
-        clearFile(locationsFile);
-        fillLocationsFile(11740);
+        //clearFile(locationsFile);
+        //fillLocationsFile(11740);
+
+        clearFile(ingredientsFile+"_new");
+        chanceIngredients();
+
+    }
+
+    public void chanceIngredients(){
+        try{
+            LineNumberReader lineReader = new LineNumberReader(new FileReader(ingredientsFile));
+            FileWriter writer = new FileWriter(ingredientsFile + "_new", true);
+
+            String line = lineReader.readLine();
+
+            while(line != null){
+                String outText = line + "\t" + (int)(Math.random()*11780) + "\t" + (int)(Math.random()*5000);
+                writer.write(outText+"\n");
+                line = lineReader.readLine();
+            }
+
+            lineReader.close();
+            writer.close();
+        } catch (IOException e){
+            System.err.println(e);
+        }
+
     }
 
     public void clearFile(String fileName){

@@ -17,7 +17,7 @@ class Reader{
         this.mineralsFile  = "data/aliveCreatures";
         this.aquatoriesFile = "data/aquatories";
         this.aliveCreaturesFile = "data/minerals";
-        this.objectsListFile = "data/objectsList";
+        this.objectsListFile = "data/catalog";
         this.locationsFile = "data/locationFile";
         this.ingredientsFile = "data/ingredients";
 
@@ -27,11 +27,11 @@ class Reader{
         //clearFile(objectsListFile);
         //int amount = fillObjectsListFile();
 
-        //clearFile(locationsFile);
-        //fillLocationsFile(11740);
+        clearFile(locationsFile);
+        fillLocationsFile(11740);
 
-        clearFile(ingredientsFile+"_new");
-        chanceIngredients();
+        //clearFile(ingredientsFile+"_new");
+        //chanceIngredients();
 
     }
 
@@ -104,9 +104,9 @@ class Reader{
                     String output = aquatoryId + "\t";
 
                     // ид_существа
-                    output = output + (int)(Math.random() * objectsListFileLinesAmount) + "\t";
+                    output = output + (int)(1 + Math.random() * objectsListFileLinesAmount) + "\t";
 
-                    output = output + (int)(Math.random()*150000) + "\t";
+                    output = output + (int)(1 + Math.random()*150000) + "\t";
 
 
                     double delta = 5;

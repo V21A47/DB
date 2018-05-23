@@ -1,0 +1,30 @@
+<project name="${projectName}" default="build">
+
+    <target name="compile" description="A compile task for all .java files">
+        <mkdir dir="build"/>
+        <!-- Compile all project's files -->
+        <javac fork="true" destdir="build" includeantruntime="false" srcdir="src/"/>
+    </target>
+
+    <target name="build" depends="compile" description="The jar making task">
+        <!-- Creates the manifest file which has a version information -->
+        <manifest file="build/MANIFEST.MF">
+            <attribute name="Main-Class" value="DBK"/>
+        </manifest>
+
+        <!-- Creates jar file which has all project's files except tests -->
+        <jar destfile="dbk.jar" manifest="build/MANIFEST.MF">
+            <fileset dir="build">
+                <include name="**/*.class"/>
+            </fileset>
+        </jar>
+    </target>
+
+
+
+    <target name="clean">
+        <delete dir="build"/>
+        <delete file="dbk.jar"/>
+    </target>
+
+</project>

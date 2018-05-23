@@ -26,20 +26,21 @@ AS $BODY$
 $BODY$ LANGUAGE plpgsql;
 
 
-with recursive r as (
+
+
+with recursive NeperNum as (
     select
-        1 as n,
-        1.0 as e
+        20 as n,
+        20 + 20 / (20 + 1.0) as temp
     union
     select
-        n+1 as n,
-        n / ( (n+1) + e ) as e
-
-    from r
-    where n < 20
-
+        n - 1 as n,
+        n + n / temp as temp
+    from NeperNum
+    where n > 0
 )
-select (2.0 + 1.0 / (1.0 + e)) as e from r;
+select (2.0 + 1.0 / temp) as e from NeperNum where n = 0;
+
 
 CREATE OR REPLACE FUNCTION getLocation(id_ingredient integer, amount integer)
 RETURNS integer

@@ -1,3 +1,5 @@
+/* я сделаль */
+
 /*
     FUNCTION
     возвращает true, если существо, из которого сделан ингредиент, живое
@@ -65,6 +67,7 @@ $$ LANGUAGE SQL;
 
 
 /*
+    FUNCTION
     Данные о лекарстве
 */
 create or replace function getMedicineConsist (id integer)
@@ -76,5 +79,43 @@ as $$
     from СОСТАВ
         join ЛЕКАРСТВО using(ИД_ЛЕКАРСТВА)
         join ИНГРЕДИЕНТ using(ИД_ИНГРЕДИЕНТА)
-    where ЛЕКАРСТВО.ИД_ЛЕКАРСТВА = 12;
+    where ЛЕКАРСТВО.ИД_ЛЕКАРСТВА = id;
+$$ LANGUAGE SQL;
+
+
+/*
+    FUNCTION
+    Получить список лекарств, которые лечат одну болезнь
+*/
+create or replace function getMedicinesForDesiase (id integer)
+returns table (id_medicine integer, name text, efficiency float)
+as $$
+    select ЛЕКАРСТВО.ИД_ЛЕКАРСТВА,
+        ЛЕКАРСТВО.НАЗВАНИЕ,
+        ЭФФЕКТИВНОСТЬ_ЛЕКАРСТВА.ЭФФЕКТИВНОСТЬ
+    from ЭФФЕКТИВНОСТЬ_ЛЕКАРСТВА
+        join БОЛЕЗНЬ using(ИД_БОЛЕЗНИ)
+        join ЛЕКАРСТВО using(ИД_ЛЕКАРСТВА)
+    where ЭФФЕКТИВНОСТЬ_ЛЕКАРСТВА.ЭФФЕКТИВНОСТЬ > 0.4
+        and БОЛЕЗНЬ.ИД_БОЛЕЗНИ=id;
+$$ LANGUAGE SQL;
+
+/*
+    FUNCTION
+    Получает данные о заказах какой-либо сети
+*/
+create or replace function getTaskInfo (name text)
+returns table (id_Medicine integer, name_Medicine text, medicine_Amount integer, number_In_queue integer, progress float, finish_Date Date)
+as $$
+    select ЛЕКАРСТВО.ИД_ЛЕКАРСТВА,
+        ЛЕКАРСТВО.НАЗВАНИЕ,
+        ЗАКАЗ.КОЛИЧЕСТВО,
+        СТАТУС_ЗАКАЗА.НОМЕР_В_ОЧЕРЕДИ,
+        СТАТУС_ЗАКАЗА.ВЫПОЛНЕНИЕ,
+        СТАТУС_ЗАКАЗА.ДАТА_ЗАВЕРШЕНИЯ
+    from ЗАКАЗ
+        join ЛЕКАРСТВО using(ИД_ЛЕКАРСТВА)
+        join СТАТУС_ЗАКАЗА using(ИД_ЗАКАЗА)
+    where ЗАКАЗ.НАЗВАНИЕ_АПТЕЧНОЙ_СЕТИ=name
+    order by СТАТУС_ЗАКАЗА.НОМЕР_В_ОЧЕРЕДИ;
 $$ LANGUAGE SQL;

@@ -60,7 +60,7 @@ as $$
                 )
         end) as description
     from ИНГРЕДИЕНТ as ing
-    where ing.ИД_ИНГРЕДИЕНТА = 1;
+    where ing.ИД_ИНГРЕДИЕНТА = id;
 $$ LANGUAGE SQL;
 
 

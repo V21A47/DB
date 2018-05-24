@@ -328,8 +328,8 @@ CREATE TABLE АКВАТОРИЯ (
     ИД_АКВАТОРИИ  serial    PRIMARY KEY,
     ТИП   text NOT NULL,
     НАЗВАНИЕ text  NOT NULL,
-ШИРОТА real CHECK ( ШИРОТА >= -90 AND ШИРОТА <= 90),
-ДОЛГОТА real CHECK (ДОЛГОТА >= -180 AND ДОЛГОТА <= 180),
+    ШИРОТА real CHECK ( ШИРОТА >= -90 AND ШИРОТА <= 90),
+    ДОЛГОТА real CHECK (ДОЛГОТА >= -180 AND ДОЛГОТА <= 180),
     ОПИСАНИЕ text
 );
 
@@ -369,11 +369,10 @@ CREATE TABLE ЛОКАЦИЯ (
     ДОЛГОТА real CHECK (ДОЛГОТА >= -180 AND ДОЛГОТА <= 180)
 );
 
-
+/* добавлять перед мин веществами */
 DROP TABLE ЖИВОЕ_СУЩЕСТВО CASCADE;
 CREATE TABLE ЖИВОЕ_СУЩЕСТВО (
     ИД_СУЩЕСТВА serial REFERENCES СПРАВОЧНИК_СУЩЕСТВ(ИД_СУЩЕСТВА),
-    ЖИВОЕ boolean,
     КЛАСС text NOT NULL,
     СЕМЕЙСТВО text NOT NULL,
     ВИД text NOT NULL,
@@ -389,18 +388,17 @@ CREATE TABLE МИНЕРАЛЬНОЕ_ВЕЩЕСТВО (
 );
 
 
-//  не соотвествует действительности
 DROP TABLE ПЛАН_МАРШРУТ CASCADE;
 CREATE TABLE ПЛАН_МАРШРУТ (
     ИД_ЗАКАЗА integer PRIMARY KEY,
     ИД_ИНГРЕДИЕНТА  integer REFERENCES ИНГРЕДИЕНТ(ИД_ИНГРЕДИЕНТА),
     ИД_ЛОКАЦИИ  integer REFERENCES ЛОКАЦИЯ(ИД_ЛОКАЦИИ  ),
     СОБРАНО boolean NOT NULL,
-    ДАТА_ЗАВЕРШЕНИЯ date NOT NULL
+    ДАТА_ЗАВЕРШЕНИЯ date NOT NULL,
+    МАССА float NOT NULL
 );
 
 
-//  не соотвествует действительности
 DROP TABLE НАЛИЧИЕ_ИНГРЕДИЕНТОВ CASCADE;
 CREATE TABLE НАЛИЧИЕ_ИНГРЕДИЕНТОВ (
     ИД_ИНГРЕДИЕНТА integer REFERENCES ИНГРЕДИЕНТ(ИД_ИНГРЕДИЕНТА),
@@ -435,41 +433,170 @@ CREATE TABLE КОРАБЛЬ (
     СРЕДНЯЯ_СКОРОСТЬ float CHECK(СРЕДНЯЯ_СКОРОСТЬ > 0 AND 	СРЕДНЯЯ_СКОРОСТЬ <= 40)
 );
 
-insert into КОРАБЛЬ (ШИРОТА, ДОЛГОТА, СРЕДНЯЯ СКОРОСТЬ)
+insert into КОРАБЛЬ (ШИРОТА, ДОЛГОТА, СРЕДНЯЯ_СКОРОСТЬ)
     values (40, 133, 0.7);
 
+1
 \copy БОЛЕЗНЬ(НАЗВАНИЕ, ТИП, ОПИСАНИЕ) FROM 'desease';
+2
 \copy ЛЕКАРСТВО(НАЗВАНИЕ, ОПИСАНИЕ, ЭКСПЕРИМЕНТАЛЬНОЕ, СТОИМОСТЬ) FROM 'medicines';
+3
 \copy ЭФФЕКТИВНОСТЬ_ЛЕКАРСТВА FROM 'lekar_des';
+4
 \copy СПРАВОЧНИК_СУЩЕСТВ(ЖИВОЕ) FROM 'catalog';
+5
 \copy ИНГРЕДИЕНТ(НАЗВАНИЕ, ИД_СУЩЕСТВА, СТОИМОСТЬ) FROM 'ingredients';
+6
 \copy СОСТАВ (ИД_ЛЕКАРСТВА, ИД_ИНГРЕДИЕНТА, МАССА) FROM 'sostav';
+7
 \copy АКВАТОРИЯ(ТИП, НАЗВАНИЕ, ШИРОТА, ДОЛГОТА, ОПИСАНИЕ) FROM 'aquatories';
-\copy МИНЕРАЛЬНОЕ_ВЕЩЕСТВО(ИД_СУЩЕСТВА, ХИМИЧЕСКИЙ_ТИП, ОПИСАНИЕ) FROM 'minerals';
-\copy ЛОКАЦИЯ(ИД_АКВАТОРИИ, ИД_СУЩЕСТВА, КОЛИЧЕСТВО, ШИРОТА, ДОЛГОТА) FROM 'locationFile';
+8
 \copy ЖИВОЕ_СУЩЕСТВО(КЛАСС, СЕМЕЙСТВО, ВИД, ОПИСАНИЕ) FROM 'aliveCreatures';
+9
+\copy МИНЕРАЛЬНОЕ_ВЕЩЕСТВО(ИД_СУЩЕСТВА, ХИМИЧЕСКИЙ_ТИП, ОПИСАНИЕ) FROM 'minerals';
+10
+\copy ЛОКАЦИЯ(ИД_АКВАТОРИИ, ИД_СУЩЕСТВА, КОЛИЧЕСТВО, ШИРОТА, ДОЛГОТА) FROM 'locationFile';
 
+
+
+create or replace function getMedicineConsist (id integer)
+returns table (id_ingredient integer, name text, mass float)
+as $$
+    select ИНГРЕДИЕНТ.ИД_ИНГРЕДИЕНТА,
+        ИНГРЕДИЕНТ.НАЗВАНИЕ,
+        СОСТАВ.МАССА
+    from СОСТАВ
+        join ЛЕКАРСТВО using(ИД_ЛЕКАРСТВА)
+        join ИНГРЕДИЕНТ using(ИД_ИНГРЕДИЕНТА)
+    where ЛЕКАРСТВО.ИД_ЛЕКАРСТВА = 12;
+$$ LANGUAGE SQL;
+
+/*
+    состав лекарства
+    поменять условие
+*/
+select ИНГРЕДИЕНТ.ИД_ИНГРЕДИЕНТА,
+    ИНГРЕДИЕНТ.НАЗВАНИЕ,
+    СОСТАВ.МАССА
+from СОСТАВ
+    join ЛЕКАРСТВО using(ИД_ЛЕКАРСТВА)
+    join ИНГРЕДИЕНТ using(ИД_ИНГРЕДИЕНТА)
+where ЛЕКАРСТВО.ИД_ЛЕКАРСТВА = 12;
 
 
 /*
-    Рассчет расстояний до всех локаций, в которых есть определенный организм,
-    из которого получается нужный ингредиент.
-    Просто переписать условие where.
+    лекарства, которые эффективно лечат болезнь
+    поменять условие
 */
-select MIN (select loc.ИД_ЛОКАЦИИ, (
+select ЛЕКАРСТВО.НАЗВАНИЕ,
+    ЭФФЕКТИВНОСТЬ_ЛЕКАРСТВА.ЭФФЕКТИВНОСТЬ
+from ЭФФЕКТИВНОСТЬ_ЛЕКАРСТВА
+    join БОЛЕЗНЬ using(ИД_БОЛЕЗНИ)
+    join ЛЕКАРСТВО using(ИД_ЛЕКАРСТВА)
+where ЭФФЕКТИВНОСТЬ_ЛЕКАРСТВА.ЭФФЕКТИВНОСТЬ > 0.4
+    and БОЛЕЗНЬ.ИД_БОЛЕЗНИ=42;
 
-select id,
-    MIN(distance)
-    from (
-        select loc.ИД_ЛОКАЦИИ as id,
-            SQRT(
-                (loc.ШИРОТА - (select ШИРОТА from КОРАБЛЬ))*(loc.ШИРОТА-(select ШИРОТА from КОРАБЛЬ) ) +
-                (loc.ДОЛГОТА-(select ДОЛГОТА from КОРАБЛЬ))*(loc.ДОЛГОТА-(select ДОЛГОТА from КОРАБЛЬ))
-            ) as distance
-        from ЛОКАЦИЯ as loc
-            join СПРАВОЧНИК_СУЩЕСТВ using(ИД_СУЩЕСТВА)
-            join ИНГРЕДИЕНТ using(ИД_СУЩЕСТВА)
-        where СПРАВОЧНИК_СУЩЕСТВ.ИД_СУЩЕСТВА = ИНГРЕДИЕНТ.ИД_СУЩЕСТВА
-            and ИНГРЕДИЕНТ.НАЗВАНИЕ='Аллантоин'
-        ) as templ
-    group by templ.id;
+create or replace function getCreatureInfo (id integer)
+returns table (id integer, type text, name text, description text)
+as $$
+    select
+        ing.ИД_СУЩЕСТВА as id,
+        (case
+        when (isAlive(ing.ИД_ИНГРЕДИЕНТА) = true)
+            then
+                ('alive creature')
+            else
+                ('mineral creature')
+        end) as type,
+        (case
+        when (isAlive(ing.ИД_ИНГРЕДИЕНТА) = true)
+            then
+                (
+                    select ВИД
+                    from ЖИВОЕ_СУЩЕСТВО as m
+                    where m.ИД_СУЩЕСТВА = ing.ИД_СУЩЕСТВА
+                )
+            else
+                (
+                    select ХИМИЧЕСКИЙ_ТИП
+                    from МИНЕРАЛЬНОЕ_ВЕЩЕСТВО as m
+                    where m.ИД_СУЩЕСТВА = ing.ИД_СУЩЕСТВА
+                )
+        end) as name,
+        (case
+        when (isAlive(ing.ИД_ИНГРЕДИЕНТА) = true)
+            then
+                (
+                    select КЛАСС
+                    from ЖИВОЕ_СУЩЕСТВО as m
+                    where m.ИД_СУЩЕСТВА = ing.ИД_СУЩЕСТВА
+                )
+            else
+                (
+                    select ОПИСАНИЕ
+                    from МИНЕРАЛЬНОЕ_ВЕЩЕСТВО as m
+                    where m.ИД_СУЩЕСТВА = ing.ИД_СУЩЕСТВА
+                )
+        end) as description
+    from ИНГРЕДИЕНТ as ing
+    where ing.ИД_ИНГРЕДИЕНТА = 1;
+$$ LANGUAGE SQL;
+
+/*
+    Возвращает данные о существе, из которого добыт ингредиент
+*/
+select
+    ing.ИД_СУЩЕСТВА as id,
+    (case
+    when (isAlive(ing.ИД_ИНГРЕДИЕНТА) = true)
+        then
+            ('alive creature')
+        else
+            ('mineral creature')
+    end) as type,
+    (case
+    when (isAlive(ing.ИД_ИНГРЕДИЕНТА) = true)
+        then
+            (
+                select ВИД
+                from ЖИВОЕ_СУЩЕСТВО as m
+                where m.ИД_СУЩЕСТВА = ing.ИД_СУЩЕСТВА
+            )
+        else
+            (
+                select ХИМИЧЕСКИЙ_ТИП
+                from МИНЕРАЛЬНОЕ_ВЕЩЕСТВО as m
+                where m.ИД_СУЩЕСТВА = ing.ИД_СУЩЕСТВА
+            )
+    end) as name,
+    (case
+    when (isAlive(ing.ИД_ИНГРЕДИЕНТА) = true)
+        then
+            (
+                select КЛАСС
+                from ЖИВОЕ_СУЩЕСТВО as m
+                where m.ИД_СУЩЕСТВА = ing.ИД_СУЩЕСТВА
+            )
+        else
+            (
+                select ОПИСАНИЕ
+                from МИНЕРАЛЬНОЕ_ВЕЩЕСТВО as m
+                where m.ИД_СУЩЕСТВА = ing.ИД_СУЩЕСТВА
+            )
+    end) as description
+from ИНГРЕДИЕНТ as ing
+where ing.ИД_ИНГРЕДИЕНТА = 1;
+
+
+/*
+    возвращает true, если существо, из которого сделан ингредиент, живое
+    id - id ингредиента
+*/
+create or replace function isAlive (id integer)
+returns boolean
+as $$
+    select spr.ЖИВОЕ as isAlive
+    from СПРАВОЧНИК_СУЩЕСТВ as spr
+        join ИНГРЕДИЕНТ as ing using(ИД_СУЩЕСТВА)
+    where ing.ИД_ИНГРЕДИЕНТА=id
+$$ LANGUAGE SQL;

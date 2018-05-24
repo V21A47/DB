@@ -1,0 +1,80 @@
+/*
+    FUNCTION
+    возвращает true, если существо, из которого сделан ингредиент, живое
+    id - id ингредиента
+*/
+create or replace function isAlive (id integer)
+returns boolean
+as $$
+    select spr.ЖИВОЕ as isAlive
+    from СПРАВОЧНИК_СУЩЕСТВ as spr
+        join ИНГРЕДИЕНТ as ing using(ИД_СУЩЕСТВА)
+    where ing.ИД_ИНГРЕДИЕНТА=id
+$$ LANGUAGE SQL;
+
+
+/*
+    FUNCTION
+    Возвращает данные о существе, из которого добыт ингредиент
+*/
+create or replace function getCreatureInfo (id integer)
+returns table (id integer, type text, name text, description text)
+as $$
+    select
+        ing.ИД_СУЩЕСТВА as id,
+        (case
+        when (isAlive(ing.ИД_ИНГРЕДИЕНТА) = true)
+            then
+                ('alive creature')
+            else
+                ('mineral creature')
+        end) as type,
+        (case
+        when (isAlive(ing.ИД_ИНГРЕДИЕНТА) = true)
+            then
+                (
+                    select ВИД
+                    from ЖИВОЕ_СУЩЕСТВО as m
+                    where m.ИД_СУЩЕСТВА = ing.ИД_СУЩЕСТВА
+                )
+            else
+                (
+                    select ХИМИЧЕСКИЙ_ТИП
+                    from МИНЕРАЛЬНОЕ_ВЕЩЕСТВО as m
+                    where m.ИД_СУЩЕСТВА = ing.ИД_СУЩЕСТВА
+                )
+        end) as name,
+        (case
+        when (isAlive(ing.ИД_ИНГРЕДИЕНТА) = true)
+            then
+                (
+                    select КЛАСС
+                    from ЖИВОЕ_СУЩЕСТВО as m
+                    where m.ИД_СУЩЕСТВА = ing.ИД_СУЩЕСТВА
+                )
+            else
+                (
+                    select ОПИСАНИЕ
+                    from МИНЕРАЛЬНОЕ_ВЕЩЕСТВО as m
+                    where m.ИД_СУЩЕСТВА = ing.ИД_СУЩЕСТВА
+                )
+        end) as description
+    from ИНГРЕДИЕНТ as ing
+    where ing.ИД_ИНГРЕДИЕНТА = 1;
+$$ LANGUAGE SQL;
+
+
+/*
+    Данные о лекарстве
+*/
+create or replace function getMedicineConsist (id integer)
+returns table (id_ingredient integer, name text, mass float)
+as $$
+    select ИНГРЕДИЕНТ.ИД_ИНГРЕДИЕНТА,
+        ИНГРЕДИЕНТ.НАЗВАНИЕ,
+        СОСТАВ.МАССА
+    from СОСТАВ
+        join ЛЕКАРСТВО using(ИД_ЛЕКАРСТВА)
+        join ИНГРЕДИЕНТ using(ИД_ИНГРЕДИЕНТА)
+    where ЛЕКАРСТВО.ИД_ЛЕКАРСТВА = 12;
+$$ LANGUAGE SQL;

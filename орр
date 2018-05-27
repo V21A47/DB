@@ -1,0 +1,15 @@
+drop table КОРАБЛЬ                 cascade ;
+drop table ЛОКАЦИЯ                 cascade ;
+drop table НАЛИЧИЕ_ИНГРЕДИЕНТОВ    cascade ;
+drop table ПЛАН_МАРШРУТ            cascade ;
+drop table ИНГРЕДИЕНТ              cascade ;
+drop table СОСТАВ                  cascade ;
+drop table ЖИВОЕ_СУЩЕСТВО          cascade ;
+drop table МИНЕРАЛЬНОЕ_ВЕЩЕСТВО    cascade ;
+drop table СПРАВОЧНИК_СУЩЕСТВ      cascade ;
+drop table ЗАКАЗ                   cascade ;
+drop table СТАТУС_ЗАКАЗА           cascade ;
+drop table БОЛЕЗНЬ                 cascade ;
+drop table ЛЕКАРСТВО               cascade ;
+drop table ЭФФЕКТИВНОСТЬ_ЛЕКАРСТВА cascade ;
+drop table ПОПУЛЯЦИЯ               cascade ;

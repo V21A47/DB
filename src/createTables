@@ -390,7 +390,7 @@ CREATE TABLE МИНЕРАЛЬНОЕ_ВЕЩЕСТВО (
 
 DROP TABLE ПЛАН_МАРШРУТ CASCADE;
 CREATE TABLE ПЛАН_МАРШРУТ (
-    ИД_ЗАКАЗА integer PRIMARY KEY,
+    ИД_ЗАКАЗА integer,
     ИД_ИНГРЕДИЕНТА  integer REFERENCES ИНГРЕДИЕНТ(ИД_ИНГРЕДИЕНТА),
     ИД_ЛОКАЦИИ  integer REFERENCES ЛОКАЦИЯ(ИД_ЛОКАЦИИ  ),
     СОБРАНО boolean NOT NULL,

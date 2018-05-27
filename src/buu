@@ -71,10 +71,11 @@ $$ LANGUAGE SQL;
     Данные о лекарстве
 */
 create or replace function getMedicineConsist (id integer)
-returns table (id_ingredient integer, name text, mass float)
+returns table (ИД_ИНГРЕДИЕНТА integer, НАЗВАНИЕ text, СТОИМОСТЬ integer, МАССА float)
 as $$
     select ИНГРЕДИЕНТ.ИД_ИНГРЕДИЕНТА,
         ИНГРЕДИЕНТ.НАЗВАНИЕ,
+        ИНГРЕДИЕНТ.СТОИМОСТЬ,
         СОСТАВ.МАССА
     from СОСТАВ
         join ЛЕКАРСТВО using(ИД_ЛЕКАРСТВА)
@@ -105,7 +106,9 @@ $$ LANGUAGE SQL;
     Получает данные о заказах какой-либо сети
 */
 create or replace function getTaskInfo (name text)
-returns table (id_Medicine integer, name_Medicine text, medicine_Amount integer, number_In_queue integer, progress float, finish_Date Date)
+returns table (id_Medicine integer, name_Medicine text,
+               medicine_Amount integer, number_In_queue integer,
+               progress float, finish_Date Date)
 as $$
     select ЛЕКАРСТВО.ИД_ЛЕКАРСТВА,
         ЛЕКАРСТВО.НАЗВАНИЕ,
@@ -119,3 +122,63 @@ as $$
     where ЗАКАЗ.НАЗВАНИЕ_АПТЕЧНОЙ_СЕТИ=name
     order by СТАТУС_ЗАКАЗА.НОМЕР_В_ОЧЕРЕДИ;
 $$ LANGUAGE SQL;
+
+
+
+/*
+    Получение данных об ингредиентах, которые есть в лекарствах в
+    заказах у одной сети
+*/
+create or replace function getIngredientsPerMedicalGroup (name text)
+returns table (ИД_ИНГРЕДИЕНТА integer, НАЗВАНИЕ text, СТОИМОСТЬ integer, МАССА float)
+as $$
+    select * from getMedicineConsist(
+    (
+        select ИД_ЛЕКАРСТВА
+        from ЛЕКАРСТВО
+            join ЗАКАЗ using(ИД_ЛЕКАРСТВА)
+        where ЗАКАЗ.НАЗВАНИЕ_АПТЕЧНОЙ_СЕТИ = 'ABC')
+    )
+$$ LANGUAGE SQL;
+
+
+/*
+    Получение списка локаций, в которых имеется не меньше minAmount экземпляров
+    существа с указанным ИД
+*/
+create or replace function getIngredientLocations (idIngredient integer, minAmount integer)
+returns table (ИД_ЛОКАЦИИ integer, НАЗВАНИЕ text, ШИРОТА real, ДОЛГОТА real, КОЛИЧЕСТВО integer)
+as $$
+    select loc.ИД_ЛОКАЦИИ,
+        aqu.НАЗВАНИЕ,
+        loc.ШИРОТА,
+        loc.ДОЛГОТА,
+        loc.КОЛИЧЕСТВО
+    from ЛОКАЦИЯ as loc
+        join АКВАТОРИЯ as aqu using(ИД_АКВАТОРИИ)
+    where loc.ИД_СУЩЕСТВА = (select ИД_СУЩЕСТВА from getCreatureInfo(idIngredient))
+    group by loc.ИД_ЛОКАЦИИ, aqu.НАЗВАНИЕ, loc.ШИРОТА, loc.ДОЛГОТА, loc.КОЛИЧЕСТВО
+    having loc.КОЛИЧЕСТВО > minAmount
+$$ LANGUAGE SQL;
+
+
+/*
+    Теперь это есть актуальный список индексов
+*/
+create index эф_лек__эффективность on ЭФФЕКТИВНОСТЬ_ЛЕКАРСТВА(ЭФФЕКТИВНОСТЬ);
+create index эф_лек__ид_болезни on ЭФФЕКТИВНОСТЬ_ЛЕКАРСТВА(ИД_БОЛЕЗНИ);
+
+create index лек__название on ЛЕКАРСТВО using hash(НАЗВАНИЕ);
+create index лек__стоимость on ЛЕКАРСТВО(СТОИМОСТЬ);
+
+create index ингр__стоимость on ИНГРЕДИЕНТ(СТОИМОСТЬ);
+
+create index лок__количество on ЛОКАЦИЯ(КОЛИЧЕСТВО);
+create index лок__широта on ЛОКАЦИЯ(ШИРОТА);
+create index лок__долгота on ЛОКАЦИЯ(ДОЛГОТА);
+
+create index бол__тип on БОЛЕЗНЬ using hash(ТИП);
+
+create index нал_ингр__годен_до on НАЛИЧИЕ_ИНГРЕДИЕНТОВ(ГОДЕН_ДО);
+
+create index план__запрос on ПЛАН_МАРШРУТ(ИД_ЗАКАЗА, ИД_ИНГРЕДИЕНТА, ИД_ЛОКАЦИИ);
